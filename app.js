@@ -1,0 +1,27 @@
+﻿import 'dotenv/config';
+import connectDB from "./database/db.js";
+import express from "express";
+const app = express();
+import { AuthRouter } from './modules/Auth/index.js';
+import { ProductRouter } from './modules/Product/index.js';
+import cors from 'cors';
+
+
+app.use(express.json());
+
+
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+})
+)
+
+connectDB();
+
+app.use('/api/v1', AuthRouter);
+app.use('/api/v1', ProductRouter);
+
+
+export { app };
+

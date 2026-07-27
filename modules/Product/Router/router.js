@@ -8,11 +8,12 @@ import {
   DeleteProduct,
   DeleteAllProducts
 } from "../controller/addProduct.js";
+import { generateReportController } from "../controller/genrateReport.controller.js";
 import upload from "../multer.js";
 
 const ProductRouter = express.Router();
 
-ProductRouter.post("/add", upload.single("img"), Addproduct);
+ProductRouter.post("/add", upload.single("image"), Addproduct);
 ProductRouter.get("/get", GetProducts);
 ProductRouter.get("/get/:id", GetProductById);
 ProductRouter.get("/dummy", GetDummyData);
@@ -20,4 +21,6 @@ ProductRouter.put("/update/:id", upload.single("img"), UpdateProduct);
 ProductRouter.delete("/delete/:id", DeleteProduct);
 ProductRouter.delete("/delete-all", DeleteAllProducts);
 
+//Generate report endpoints
+ProductRouter.get('/Report-data', generateReportController);
 export { ProductRouter };

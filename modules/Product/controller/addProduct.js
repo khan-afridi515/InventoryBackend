@@ -13,6 +13,8 @@ const Addproduct = async (req, res) => {
     const result = await addProductService(req.body, req.file);
     return res.status(result.status).json(result);
   } catch (error) {
+    console.log("We are in the add product ", error.message);
+    
     res.status(error.status || 500).json({
       success: false,
       message: error.message || "Failed to add product"

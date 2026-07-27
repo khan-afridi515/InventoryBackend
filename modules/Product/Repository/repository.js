@@ -1,18 +1,19 @@
-import Product from '../model/modal.js';
-import fileOnCloud from '../utills/cloud.js';
-
+import Product from "../model/modal.js";
+import fileOnCloud from "../utills/cloud.js";
 
 const addProductRepository = async (productData, file) => {
   try {
-     let imgUrl = "";
+    let imgUrl = "";
 
-        if (file) {
-            let pic = await fileOnCloud(file.path);
-            imgUrl = pic.secure_url;
-            productData.img = imgUrl;
-        }
+    if (file) {
+      let pic = await fileOnCloud(file.path);
+      console.log("Check the pic of the file in the repository ", pic);
 
-        console.log("imgUrl", imgUrl);
+      imgUrl = pic.secure_url;
+      productData.image = imgUrl;
+    }
+
+    console.log("imgUrl", imgUrl);
     const result = await Product.create(productData);
     return result;
   } catch (err) {
@@ -47,7 +48,7 @@ const updateProductRepository = async (id, updateData, file) => {
 
     const result = await Product.findByIdAndUpdate(id, updateData, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
     return result;
   } catch (err) {
@@ -79,5 +80,5 @@ export {
   getProductByIdRepository,
   updateProductRepository,
   deleteProductRepository,
-  deleteAllProductsRepository
+  deleteAllProductsRepository,
 };

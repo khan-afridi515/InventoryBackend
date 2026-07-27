@@ -9,6 +9,8 @@ import {
 
 const addProductService = async (productData, file) => {
   try {
+    console.log("We are in the add product Service and check the file ", file);
+    
     const result = await addProductRepository(productData, file);
 
     if (!result) {

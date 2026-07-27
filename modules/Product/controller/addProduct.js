@@ -2,6 +2,7 @@
   addProductService,
   getProductsService,
   getProductByIdService,
+  getDummyDataService,
   updateProductService,
   deleteProductService,
   deleteAllProductsService
@@ -44,6 +45,18 @@ const GetProductById = async (req, res) => {
   }
 };
 
+const GetDummyData = async (req, res) => {
+  try {
+    const result = await getDummyDataService();
+    return res.status(result.status).json(result);
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      message: error.message || "Failed to fetch dummy data"
+    });
+  }
+};
+
 const UpdateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -82,4 +95,4 @@ const DeleteAllProducts = async (req, res) => {
   }
 };
 
-export { Addproduct, GetProducts, GetProductById, UpdateProduct, DeleteProduct, DeleteAllProducts };
+export { Addproduct, GetProducts, GetProductById, GetDummyData, UpdateProduct, DeleteProduct, DeleteAllProducts };

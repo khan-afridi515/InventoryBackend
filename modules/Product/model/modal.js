@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema({
     img : {type : String, required: true},
     Category: {type : String, required: true, trim: true},
     sellingPrice : {type : Number},
-    supplierName : {type : String, trim: true},
+    supplierName : {type : String},
     description : {type : String, trim: true},
     sku : {type : String, required: true, unique: true, trim: true}
 }, { timestamps: true });

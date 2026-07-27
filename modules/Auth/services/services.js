@@ -7,7 +7,8 @@ import { issueToken } from "../utills/otpResetToken.js";
 import passwordHash from "../utills/passworHash.js";
 import verifyPasswordAndHash from "../utills/varifyPasswordandHash.js";
 import { emailValidation, otpVerificationValidation, userLoginValidation, userResetPasswordValidation } from "../validation/validate.js";
-
+import crypto from "crypto";
+import EbayOrderNotification from "../model/ebayOrderNotificationModel.js";
 
 
 
@@ -99,6 +100,344 @@ const ebayTokenService = async (bodyData = {}) => {
             success: false,
             status: 500,
             message: error.message || "Failed to exchange authorization code",
+        };
+    }
+};
+
+const ebayFulfillmentOrdersService = async (req) => {
+    try {
+        const accessToken = req?.query?.accessToken || req?.body?.accessToken || req?.headers?.authorization?.replace(/^Bearer\s+/i, "");
+        const { limit, offset, order_ids } = req?.query || {};
+
+        if (!accessToken) {
+            return {
+                success: false,
+                status: 400,
+                message: "accessToken is required. Provide it as a query param, body field, or Authorization header.",
+            };
+        }
+
+        // const baseUrl = process.env.EBAY_API_BASE_URL || "https://api.ebay.com";
+        const baseUrl = "https://api.sandbox.ebay.com"
+        const params = new URLSearchParams();
+
+        if (limit) params.set("limit", limit);
+        if (offset) params.set("offset", offset);
+        if (order_ids) params.set("order_ids", order_ids);
+
+        const url = `${baseUrl}/sell/fulfillment/v1/order${params.toString() ? `?${params.toString()}` : ""}`;
+
+        const response = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const responseData = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+            return {
+                success: false,
+                status: response.status,
+                message: responseData.error_description || responseData.error || "Failed to fetch eBay fulfillment orders",
+                data: responseData,
+            };
+        }
+
+        return {
+            success: true,
+            status: 200,
+            message: "eBay fulfillment orders fetched successfully",
+            data: responseData,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            status: 500,
+            message: error.message || "Failed to fetch eBay fulfillment orders",
+        };
+    }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// eBay Notification Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Verifies the X-EBAY-SIGNATURE header sent by eBay on every webhook POST.
+ *
+ * eBay signs the raw request body with HMAC-SHA256 using your
+ * EBAY_VERIFICATION_TOKEN (configured in the eBay developer portal under
+ * "Notification API → Destinations"). The resulting digest is base64-encoded
+ * and compared against the incoming header value.
+ *
+ * @param {string} rawBody   - The raw (unparsed) request body string.
+ * @param {string} signature - The value of the X-EBAY-SIGNATURE header.
+ * @returns {boolean}
+ */
+const verifyEbaySignature = (rawBody, signature) => {
+    try {
+        const verificationToken = process.env.EBAY_VERIFICATION_TOKEN;
+
+        // If no token is configured, skip verification in dev (warn loudly)
+        if (!verificationToken) {
+            console.warn(
+                "[eBay Webhook] ⚠️  EBAY_VERIFICATION_TOKEN is not set. " +
+                "Signature verification is DISABLED. Set this env variable in production!"
+            );
+            return true;
+        }
+
+        if (!signature) {
+            console.warn("[eBay Webhook] Missing X-EBAY-SIGNATURE header.");
+            return false;
+        }
+
+        const expectedSignature = crypto
+            .createHmac("sha256", verificationToken)
+            .update(rawBody, "utf8")
+            .digest("base64");
+
+        // Constant-time comparison to prevent timing attacks
+        return crypto.timingSafeEqual(
+            Buffer.from(expectedSignature, "base64"),
+            Buffer.from(signature, "base64")
+        );
+    } catch (err) {
+        console.error("[eBay Webhook] Signature verification error:", err.message);
+        return false;
+    }
+};
+
+/**
+ * Validates and extracts the ORDER_CONFIRMATION notification payload.
+ * Conforms to the AsyncAPI 2.0.0 spec at version 1.0.0.
+ *
+ * @param {object} body - Parsed JSON body from eBay.
+ * @returns {{ success: boolean, data?: object, error?: string }}
+ */
+const processOrderConfirmationNotification = (body) => {
+    const { metadata, notification } = body;
+
+    // ── Validate metadata ────────────────────────────────────────────────────
+    if (!metadata || typeof metadata !== "object") {
+        return { success: false, error: "Missing or invalid 'metadata' field." };
+    }
+
+    if (!metadata.topic) {
+        return { success: false, error: "metadata.topic is required." };
+    }
+
+    // ── Validate notification envelope ───────────────────────────────────────
+    if (!notification || typeof notification !== "object") {
+        return { success: false, error: "Missing or invalid 'notification' field." };
+    }
+
+    if (!notification.notificationId) {
+        return { success: false, error: "notification.notificationId is required." };
+    }
+
+    // ── Validate order data ──────────────────────────────────────────────────
+    const orderData = notification?.data;
+    const order = orderData?.order;
+
+    if (!order || typeof order !== "object") {
+        return { success: false, error: "notification.data.order is required." };
+    }
+
+    if (!order.orderId) {
+        return { success: false, error: "order.orderId is required." };
+    }
+
+    if (!Array.isArray(order.orderLineItems) || order.orderLineItems.length === 0) {
+        return { success: false, error: "order.orderLineItems must be a non-empty array." };
+    }
+
+    return {
+        success: true,
+        data: {
+            metadata,
+            notification,
+            order,
+        },
+    };
+};
+
+/**
+ * Main service for the POST /ebay/order-confirmation webhook.
+ *
+ * Flow:
+ *  1. Verify X-EBAY-SIGNATURE using HMAC-SHA256.
+ *  2. Validate the payload against the ORDER_CONFIRMATION spec.
+ *  3. Guard against duplicate notifications (idempotency via notificationId).
+ *  4. Persist the notification to MongoDB.
+ *  5. Return 200 OK so eBay marks the delivery as successful.
+ *
+ * NOTE: eBay expects a 200 response within a few seconds. Heavy downstream
+ * processing (email alerts, stock updates, etc.) should be queued asynchronously.
+ */
+const ebayOrderConfirmationNotificationService = async (req) => {
+    try {
+        const body    = req?.body || {};
+        const headers = req?.headers || {};
+
+        // ── 1. Signature verification ────────────────────────────────────────
+        // Express parses the JSON body before this runs, so we reconstruct
+        // the raw body from the parsed object for HMAC comparison.
+        // To use the truly raw bytes, configure express.raw() on this route
+        // and read req.rawBody (see router notes).
+        const rawBody          = JSON.stringify(body);
+        const incomingSignature = headers["x-ebay-signature"] || "";
+        const isSignatureValid = verifyEbaySignature(rawBody, incomingSignature);
+
+        if (!isSignatureValid) {
+            console.warn("[eBay Webhook] ❌ Invalid signature — request rejected.");
+            return {
+                success: false,
+                status: 403,
+                message: "Invalid X-EBAY-SIGNATURE. Request could not be authenticated.",
+            };
+        }
+
+        // ── 2. Payload validation ────────────────────────────────────────────
+        const validation = processOrderConfirmationNotification(body);
+
+        if (!validation.success) {
+            console.warn("[eBay Webhook] ❌ Payload validation failed:", validation.error);
+            return {
+                success: false,
+                status: 400,
+                message: `Payload validation failed: ${validation.error}`,
+            };
+        }
+
+        const { metadata, notification, order } = validation.data;
+
+        // ── 3. Idempotency guard ─────────────────────────────────────────────
+        const existingNotification = await EbayOrderNotification.findOne({
+            notificationId: notification.notificationId,
+        });
+
+        if (existingNotification) {
+            console.info(
+                `[eBay Webhook] ⚠️  Duplicate notification ignored: ${notification.notificationId}`
+            );
+            return {
+                success: true,
+                status: 200,
+                message: "Notification already processed (duplicate ignored).",
+                data: { notificationId: notification.notificationId, duplicate: true },
+            };
+        }
+
+        // ── 4. Persist to MongoDB ────────────────────────────────────────────
+        const savedNotification = await EbayOrderNotification.create({
+            // metadata
+            topic:         metadata.topic,
+            schemaVersion: metadata.schemaVersion,
+            deprecated:    metadata.deprecated ?? false,
+
+            // notification envelope
+            notificationId:      notification.notificationId,
+            eventDate:           notification.eventDate,
+            publishDate:         notification.publishDate,
+            publishAttemptCount: notification.publishAttemptCount ?? 1,
+
+            // order data
+            orderId:        order.orderId,
+            orderLineItems: order.orderLineItems,
+
+            // housekeeping
+            rawPayload:          body,
+            ebaySignatureHeader: incomingSignature,
+            signatureVerified:   isSignatureValid,
+        });
+
+        console.info(
+            `[eBay Webhook] ✅ ORDER_CONFIRMATION saved — orderId: ${order.orderId}, ` +
+            `notificationId: ${notification.notificationId}`
+        );
+
+        // ── 5. Return success ────────────────────────────────────────────────
+        // eBay marks delivery successful on any 2xx. Return minimal data.
+        return {
+            success: true,
+            status: 200,
+            message: "ORDER_CONFIRMATION notification received and recorded.",
+            data: {
+                notificationId: savedNotification.notificationId,
+                orderId:        savedNotification.orderId,
+                lineItemCount:  savedNotification.orderLineItems.length,
+                savedAt:        savedNotification.createdAt,
+            },
+        };
+    } catch (error) {
+        console.error("[eBay Webhook] ❌ Unexpected error:", error);
+        return {
+            success: false,
+            status: 500,
+            message: error.message || "Failed to process order confirmation notification.",
+        };
+    }
+};
+
+/**
+ * Handles eBay's endpoint-verification GET challenge.
+ *
+ * When you register a destination in the eBay Notification API, eBay sends a
+ * GET request to your webhook URL with a `challenge_code` query parameter.
+ * You must respond with:
+ *   { "challengeResponse": SHA256(challengeCode + verificationToken + endpoint) }
+ *
+ * @param {object} req - Express request object.
+ * @returns {{ success: boolean, status: number, challengeResponse?: string, message?: string }}
+ */
+const ebayOrderConfirmationChallengeService = async (req) => {
+    try {
+        const challengeCode = req?.query?.challenge_code;
+
+        if (!challengeCode) {
+            return {
+                success: false,
+                status: 400,
+                message: "Missing challenge_code query parameter.",
+            };
+        }
+
+        const verificationToken = process.env.EBAY_VERIFICATION_TOKEN;
+        const endpointUrl       = process.env.EBAY_NOTIFICATION_ENDPOINT_URL;
+
+        if (!verificationToken || !endpointUrl) {
+            console.error(
+                "[eBay Challenge] EBAY_VERIFICATION_TOKEN or EBAY_NOTIFICATION_ENDPOINT_URL " +
+                "is not configured in .env"
+            );
+            return {
+                success: false,
+                status: 500,
+                message: "Webhook endpoint is not properly configured on the server.",
+            };
+        }
+
+        // eBay challenge hash: SHA256(challengeCode + verificationToken + endpointUrl)
+        const challengeResponse = crypto
+            .createHash("sha256")
+            .update(challengeCode + verificationToken + endpointUrl)
+            .digest("hex");
+
+        console.info(`[eBay Challenge] ✅ Challenge accepted — code: ${challengeCode}`);
+
+        return {
+            success: true,
+            status: 200,
+            challengeResponse,
+        };
+    } catch (error) {
+        console.error("[eBay Challenge] ❌ Error:", error);
+        return {
+            success: false,
+            status: 500,
+            message: error.message || "Failed to process eBay challenge.",
         };
     }
 };
@@ -195,7 +534,6 @@ const emailVarifyService = async (userData) => {
     }
 }
 
-
 const resendEmailVerificationOTPService = async (emailData) => {
     try {
         // const { success, error } = emailValidation(emailData);
@@ -242,7 +580,6 @@ const resendEmailVerificationOTPService = async (emailData) => {
         };
     }
 }
-
 
 const userLoginService = async (loginData) => {
     try {        
@@ -357,7 +694,6 @@ const userLoginService = async (loginData) => {
         throw err;
     }
 };
-
 
 const emailVerifyService = async (bodyData) => {
         try {
@@ -564,7 +900,6 @@ const forgotOtpVerifyService = async (bodyData) => {
 
     }
 
-
  const myProfileService = async (userId) => {
         try {
             if (!userId) {
@@ -601,6 +936,4 @@ const forgotOtpVerifyService = async (bodyData) => {
         }
     }
 
-
-
-export {userRegistrationService, ebayTokenService, emailVarifyService, emailVerifyService, resendEmailVerificationOTPService, userLoginService, forgotOtpVerifyService, resetPasswordservice, myProfileService};
+export {userRegistrationService, ebayTokenService, ebayFulfillmentOrdersService, ebayOrderConfirmationNotificationService, ebayOrderConfirmationChallengeService, emailVarifyService, emailVerifyService, resendEmailVerificationOTPService, userLoginService, forgotOtpVerifyService, resetPasswordservice, myProfileService};

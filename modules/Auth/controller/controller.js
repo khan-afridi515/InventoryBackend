@@ -2,7 +2,7 @@ import { settingErrorStatusAndMessage } from "../utills/settingError.js";
 import { validateUserRegistrationData  } from "../validation/validate.js";
 import { settingResponse } from "../utills/settingResponse.js";
 import formatApiError from "../utills/formatApiError.js";
-import { ebayTokenService, emailVarifyService, emailVerifyService, forgotOtpVerifyService, myProfileService, resendEmailVerificationOTPService, resetPasswordservice, userLoginService, userRegistrationService } from "../services/services.js";
+import { ebayFulfillmentOrdersService, ebayTokenService, ebayOrderConfirmationNotificationService, ebayOrderConfirmationChallengeService, emailVarifyService, emailVerifyService, forgotOtpVerifyService, myProfileService, resendEmailVerificationOTPService, resetPasswordservice, userLoginService, userRegistrationService } from "../services/services.js";
 import { handledServiceResult } from "../utills/handleError.js";
 
 
@@ -153,4 +153,60 @@ const ebayTokenController = async (req, res) => {
     }
 };
 
-export { userRegistrationController, verifyEmailOTPController, resendEmailVerificationOTPController, userLoginController, emailVerifyController, verifyForgotOtp, resetPasswordController, myProfileController, ebayTokenController}
+const ebayFulfillmentOrdersController = async (req, res) => {
+    try {
+        const result = await ebayFulfillmentOrdersService(req);
+        return res.status(result.status).json(result);
+    } catch (err) {
+        console.error("Error in ebayFulfillmentOrdersController:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message || "Internal server error",
+        });
+    }
+};
+
+const ebayOrderConfirmationNotificationController = async (req, res) => {
+    try {
+        const result = await ebayOrderConfirmationNotificationService(req);
+        return res.status(result.status).json(result);
+    } catch (err) {
+        console.error("Error in ebayOrderConfirmationNotificationController:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message || "Internal server error",
+        });
+    }
+};
+
+/**
+ * GET /ebay/order-confirmation
+ *
+ * Handles eBay's endpoint-verification challenge.
+ * eBay sends a GET with ?challenge_code=<token> when you first register
+ * or update a webhook destination. Must respond within a few seconds.
+ *
+ * Response format (required by eBay):
+ *   Content-Type: application/json
+ *   { "challengeResponse": "<sha256-hex-string>" }
+ */
+const ebayOrderConfirmationChallengeController = async (req, res) => {
+    try {
+        const result = await ebayOrderConfirmationChallengeService(req);
+
+        if (!result.success) {
+            return res.status(result.status).json({ success: false, message: result.message });
+        }
+
+        // eBay requires EXACTLY this JSON shape and Content-Type
+        return res.status(200).json({ challengeResponse: result.challengeResponse });
+    } catch (err) {
+        console.error("Error in ebayOrderConfirmationChallengeController:", err);
+        return res.status(500).json({
+            success: false,
+            message: err.message || "Internal server error",
+        });
+    }
+};
+
+export { userRegistrationController, verifyEmailOTPController, resendEmailVerificationOTPController, userLoginController, emailVerifyController, verifyForgotOtp, resetPasswordController, myProfileController, ebayTokenController, ebayFulfillmentOrdersController, ebayOrderConfirmationNotificationController, ebayOrderConfirmationChallengeController}

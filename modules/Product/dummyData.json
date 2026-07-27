@@ -1,0 +1,1222 @@
+[
+  {
+    "product": "SSD",
+    "qtySold": 6,
+    "unitPurchase": 343.04,
+    "unitSelling": 379.48,
+    "totalCost": 2058.24,
+    "totalRevenue": 2276.88,
+    "profitLoss": 218.64,
+    "date": "2026-05-01"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 6,
+    "unitPurchase": 373.06,
+    "unitSelling": 437.49,
+    "totalCost": 2238.36,
+    "totalRevenue": 2624.94,
+    "profitLoss": 386.58,
+    "date": "2026-05-01"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 10,
+    "unitPurchase": 178.23,
+    "unitSelling": 250.46,
+    "totalCost": 1782.3,
+    "totalRevenue": 2504.6,
+    "profitLoss": 722.3,
+    "date": "2026-05-02"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 5,
+    "unitPurchase": 378.63,
+    "unitSelling": 497.28,
+    "totalCost": 1893.15,
+    "totalRevenue": 2486.4,
+    "profitLoss": 593.25,
+    "date": "2026-05-02"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 4,
+    "unitPurchase": 178.19,
+    "unitSelling": 254.29,
+    "totalCost": 712.76,
+    "totalRevenue": 1017.16,
+    "profitLoss": 304.4,
+    "date": "2026-05-02"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 8,
+    "unitPurchase": 421.71,
+    "unitSelling": 581.5,
+    "totalCost": 3373.68,
+    "totalRevenue": 4652.0,
+    "profitLoss": 1278.32,
+    "date": "2026-05-03"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 4,
+    "unitPurchase": 82.99,
+    "unitSelling": 104.44,
+    "totalCost": 331.96,
+    "totalRevenue": 417.76,
+    "profitLoss": 85.8,
+    "date": "2026-05-03"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 8,
+    "unitPurchase": 103.18,
+    "unitSelling": 119.31,
+    "totalCost": 825.44,
+    "totalRevenue": 954.48,
+    "profitLoss": 129.04,
+    "date": "2026-05-03"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 1,
+    "unitPurchase": 366.09,
+    "unitSelling": 443.4,
+    "totalCost": 366.09,
+    "totalRevenue": 443.4,
+    "profitLoss": 77.31,
+    "date": "2026-05-04"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 1,
+    "unitPurchase": 67.21,
+    "unitSelling": 75.31,
+    "totalCost": 67.21,
+    "totalRevenue": 75.31,
+    "profitLoss": 8.1,
+    "date": "2026-05-04"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 2,
+    "unitPurchase": 163.99,
+    "unitSelling": 225.69,
+    "totalCost": 327.98,
+    "totalRevenue": 451.38,
+    "profitLoss": 123.4,
+    "date": "2026-05-05"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 10,
+    "unitPurchase": 246.35,
+    "unitSelling": 276.71,
+    "totalCost": 2463.5,
+    "totalRevenue": 2767.1,
+    "profitLoss": 303.6,
+    "date": "2026-05-05"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 5,
+    "unitPurchase": 154.31,
+    "unitSelling": 221.09,
+    "totalCost": 771.55,
+    "totalRevenue": 1105.45,
+    "profitLoss": 333.9,
+    "date": "2026-05-05"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 3,
+    "unitPurchase": 463.99,
+    "unitSelling": 567.79,
+    "totalCost": 1391.97,
+    "totalRevenue": 1703.37,
+    "profitLoss": 311.4,
+    "date": "2026-05-06"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 2,
+    "unitPurchase": 170.52,
+    "unitSelling": 220.52,
+    "totalCost": 341.04,
+    "totalRevenue": 441.04,
+    "profitLoss": 100.0,
+    "date": "2026-05-06"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 8,
+    "unitPurchase": 379.14,
+    "unitSelling": 538.49,
+    "totalCost": 3033.12,
+    "totalRevenue": 4307.92,
+    "profitLoss": 1274.8,
+    "date": "2026-05-07"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 8,
+    "unitPurchase": 78.67,
+    "unitSelling": 90.71,
+    "totalCost": 629.36,
+    "totalRevenue": 725.68,
+    "profitLoss": 96.32,
+    "date": "2026-05-07"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 7,
+    "unitPurchase": 367.1,
+    "unitSelling": 466.77,
+    "totalCost": 2569.7,
+    "totalRevenue": 3267.39,
+    "profitLoss": 697.69,
+    "date": "2026-05-08"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 2,
+    "unitPurchase": 98.73,
+    "unitSelling": 120.28,
+    "totalCost": 197.46,
+    "totalRevenue": 240.56,
+    "profitLoss": 43.1,
+    "date": "2026-05-09"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 5,
+    "unitPurchase": 151.48,
+    "unitSelling": 170.14,
+    "totalCost": 757.4,
+    "totalRevenue": 850.7,
+    "profitLoss": 93.3,
+    "date": "2026-05-09"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 1,
+    "unitPurchase": 403.31,
+    "unitSelling": 484.86,
+    "totalCost": 403.31,
+    "totalRevenue": 484.86,
+    "profitLoss": 81.55,
+    "date": "2026-05-09"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 5,
+    "unitPurchase": 70.28,
+    "unitSelling": 94.18,
+    "totalCost": 351.4,
+    "totalRevenue": 470.9,
+    "profitLoss": 119.5,
+    "date": "2026-05-10"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 2,
+    "unitPurchase": 173.02,
+    "unitSelling": 208.67,
+    "totalCost": 346.04,
+    "totalRevenue": 417.34,
+    "profitLoss": 71.3,
+    "date": "2026-05-10"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 4,
+    "unitPurchase": 453.5,
+    "unitSelling": 644.63,
+    "totalCost": 1814.0,
+    "totalRevenue": 2578.52,
+    "profitLoss": 764.52,
+    "date": "2026-05-10"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 10,
+    "unitPurchase": 59.19,
+    "unitSelling": 77.17,
+    "totalCost": 591.9,
+    "totalRevenue": 771.7,
+    "profitLoss": 179.8,
+    "date": "2026-05-11"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 1,
+    "unitPurchase": 453.71,
+    "unitSelling": 674.11,
+    "totalCost": 453.71,
+    "totalRevenue": 674.11,
+    "profitLoss": 220.4,
+    "date": "2026-05-11"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 3,
+    "unitPurchase": 454.97,
+    "unitSelling": 525.78,
+    "totalCost": 1364.91,
+    "totalRevenue": 1577.34,
+    "profitLoss": 212.43,
+    "date": "2026-05-12"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 8,
+    "unitPurchase": 287.33,
+    "unitSelling": 429.47,
+    "totalCost": 2298.64,
+    "totalRevenue": 3435.76,
+    "profitLoss": 1137.12,
+    "date": "2026-05-12"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 1,
+    "unitPurchase": 407.05,
+    "unitSelling": 520.48,
+    "totalCost": 407.05,
+    "totalRevenue": 520.48,
+    "profitLoss": 113.43,
+    "date": "2026-05-12"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 5,
+    "unitPurchase": 213.39,
+    "unitSelling": 244.35,
+    "totalCost": 1066.95,
+    "totalRevenue": 1221.75,
+    "profitLoss": 154.8,
+    "date": "2026-05-13"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 9,
+    "unitPurchase": 497.57,
+    "unitSelling": 596.05,
+    "totalCost": 4478.13,
+    "totalRevenue": 5364.45,
+    "profitLoss": 886.32,
+    "date": "2026-05-14"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 5,
+    "unitPurchase": 115.48,
+    "unitSelling": 157.92,
+    "totalCost": 577.4,
+    "totalRevenue": 789.6,
+    "profitLoss": 212.2,
+    "date": "2026-05-15"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 8,
+    "unitPurchase": 421.12,
+    "unitSelling": 483.73,
+    "totalCost": 3368.96,
+    "totalRevenue": 3869.84,
+    "profitLoss": 500.88,
+    "date": "2026-05-16"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 8,
+    "unitPurchase": 39.76,
+    "unitSelling": 55.02,
+    "totalCost": 318.08,
+    "totalRevenue": 440.16,
+    "profitLoss": 122.08,
+    "date": "2026-05-16"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 10,
+    "unitPurchase": 319.5,
+    "unitSelling": 359.39,
+    "totalCost": 3195.0,
+    "totalRevenue": 3593.9,
+    "profitLoss": 398.9,
+    "date": "2026-05-16"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 10,
+    "unitPurchase": 416.86,
+    "unitSelling": 485.43,
+    "totalCost": 4168.6,
+    "totalRevenue": 4854.3,
+    "profitLoss": 685.7,
+    "date": "2026-05-17"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 9,
+    "unitPurchase": 310.28,
+    "unitSelling": 451.63,
+    "totalCost": 2792.52,
+    "totalRevenue": 4064.67,
+    "profitLoss": 1272.15,
+    "date": "2026-05-17"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 2,
+    "unitPurchase": 376.29,
+    "unitSelling": 465.11,
+    "totalCost": 752.58,
+    "totalRevenue": 930.22,
+    "profitLoss": 177.64,
+    "date": "2026-05-18"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 7,
+    "unitPurchase": 117.94,
+    "unitSelling": 169.75,
+    "totalCost": 825.58,
+    "totalRevenue": 1188.25,
+    "profitLoss": 362.67,
+    "date": "2026-05-19"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 10,
+    "unitPurchase": 394.65,
+    "unitSelling": 479.26,
+    "totalCost": 3946.5,
+    "totalRevenue": 4792.6,
+    "profitLoss": 846.1,
+    "date": "2026-05-19"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 5,
+    "unitPurchase": 404.31,
+    "unitSelling": 523.77,
+    "totalCost": 2021.55,
+    "totalRevenue": 2618.85,
+    "profitLoss": 597.3,
+    "date": "2026-05-20"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 10,
+    "unitPurchase": 215.28,
+    "unitSelling": 278.57,
+    "totalCost": 2152.8,
+    "totalRevenue": 2785.7,
+    "profitLoss": 632.9,
+    "date": "2026-05-20"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 6,
+    "unitPurchase": 297.18,
+    "unitSelling": 327.99,
+    "totalCost": 1783.08,
+    "totalRevenue": 1967.94,
+    "profitLoss": 184.86,
+    "date": "2026-05-21"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 2,
+    "unitPurchase": 216.73,
+    "unitSelling": 266.71,
+    "totalCost": 433.46,
+    "totalRevenue": 533.42,
+    "profitLoss": 99.96,
+    "date": "2026-05-21"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 7,
+    "unitPurchase": 107.38,
+    "unitSelling": 141.03,
+    "totalCost": 751.66,
+    "totalRevenue": 987.21,
+    "profitLoss": 235.55,
+    "date": "2026-05-21"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 6,
+    "unitPurchase": 215.91,
+    "unitSelling": 310.33,
+    "totalCost": 1295.46,
+    "totalRevenue": 1861.98,
+    "profitLoss": 566.52,
+    "date": "2026-05-22"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 1,
+    "unitPurchase": 433.56,
+    "unitSelling": 528.8,
+    "totalCost": 433.56,
+    "totalRevenue": 528.8,
+    "profitLoss": 95.24,
+    "date": "2026-05-23"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 4,
+    "unitPurchase": 93.44,
+    "unitSelling": 109.52,
+    "totalCost": 373.76,
+    "totalRevenue": 438.08,
+    "profitLoss": 64.32,
+    "date": "2026-05-24"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 2,
+    "unitPurchase": 385.97,
+    "unitSelling": 454.81,
+    "totalCost": 771.94,
+    "totalRevenue": 909.62,
+    "profitLoss": 137.68,
+    "date": "2026-05-24"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 2,
+    "unitPurchase": 92.89,
+    "unitSelling": 129.55,
+    "totalCost": 185.78,
+    "totalRevenue": 259.1,
+    "profitLoss": 73.32,
+    "date": "2026-05-24"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 6,
+    "unitPurchase": 205.6,
+    "unitSelling": 287.57,
+    "totalCost": 1233.6,
+    "totalRevenue": 1725.42,
+    "profitLoss": 491.82,
+    "date": "2026-05-25"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 2,
+    "unitPurchase": 94.26,
+    "unitSelling": 134.06,
+    "totalCost": 188.52,
+    "totalRevenue": 268.12,
+    "profitLoss": 79.6,
+    "date": "2026-05-26"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 5,
+    "unitPurchase": 278.72,
+    "unitSelling": 353.09,
+    "totalCost": 1393.6,
+    "totalRevenue": 1765.45,
+    "profitLoss": 371.85,
+    "date": "2026-05-26"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 1,
+    "unitPurchase": 187.48,
+    "unitSelling": 279.49,
+    "totalCost": 187.48,
+    "totalRevenue": 279.49,
+    "profitLoss": 92.01,
+    "date": "2026-05-26"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 9,
+    "unitPurchase": 107.45,
+    "unitSelling": 158.61,
+    "totalCost": 967.05,
+    "totalRevenue": 1427.49,
+    "profitLoss": 460.44,
+    "date": "2026-05-27"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 7,
+    "unitPurchase": 62.94,
+    "unitSelling": 92.23,
+    "totalCost": 440.58,
+    "totalRevenue": 645.61,
+    "profitLoss": 205.03,
+    "date": "2026-05-27"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 6,
+    "unitPurchase": 409.42,
+    "unitSelling": 571.54,
+    "totalCost": 2456.52,
+    "totalRevenue": 3429.24,
+    "profitLoss": 972.72,
+    "date": "2026-05-27"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 3,
+    "unitPurchase": 414.52,
+    "unitSelling": 525.03,
+    "totalCost": 1243.56,
+    "totalRevenue": 1575.09,
+    "profitLoss": 331.53,
+    "date": "2026-05-28"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 10,
+    "unitPurchase": 325.73,
+    "unitSelling": 378.28,
+    "totalCost": 3257.3,
+    "totalRevenue": 3782.8,
+    "profitLoss": 525.5,
+    "date": "2026-05-28"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 8,
+    "unitPurchase": 52.38,
+    "unitSelling": 60.27,
+    "totalCost": 419.04,
+    "totalRevenue": 482.16,
+    "profitLoss": 63.12,
+    "date": "2026-05-28"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 10,
+    "unitPurchase": 368.43,
+    "unitSelling": 478.71,
+    "totalCost": 3684.3,
+    "totalRevenue": 4787.1,
+    "profitLoss": 1102.8,
+    "date": "2026-05-29"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 9,
+    "unitPurchase": 93.65,
+    "unitSelling": 132.45,
+    "totalCost": 842.85,
+    "totalRevenue": 1192.05,
+    "profitLoss": 349.2,
+    "date": "2026-05-29"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 1,
+    "unitPurchase": 235.27,
+    "unitSelling": 272.87,
+    "totalCost": 235.27,
+    "totalRevenue": 272.87,
+    "profitLoss": 37.6,
+    "date": "2026-05-29"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 1,
+    "unitPurchase": 343.07,
+    "unitSelling": 398.89,
+    "totalCost": 343.07,
+    "totalRevenue": 398.89,
+    "profitLoss": 55.82,
+    "date": "2026-05-30"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 1,
+    "unitPurchase": 325.78,
+    "unitSelling": 425.45,
+    "totalCost": 325.78,
+    "totalRevenue": 425.45,
+    "profitLoss": 99.67,
+    "date": "2026-05-30"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 5,
+    "unitPurchase": 236.96,
+    "unitSelling": 335.01,
+    "totalCost": 1184.8,
+    "totalRevenue": 1675.05,
+    "profitLoss": 490.25,
+    "date": "2026-05-31"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 2,
+    "unitPurchase": 71.16,
+    "unitSelling": 104.88,
+    "totalCost": 142.32,
+    "totalRevenue": 209.76,
+    "profitLoss": 67.44,
+    "date": "2026-05-31"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 5,
+    "unitPurchase": 87.73,
+    "unitSelling": 102.69,
+    "totalCost": 438.65,
+    "totalRevenue": 513.45,
+    "profitLoss": 74.8,
+    "date": "2026-06-01"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 3,
+    "unitPurchase": 141.3,
+    "unitSelling": 168.53,
+    "totalCost": 423.9,
+    "totalRevenue": 505.59,
+    "profitLoss": 81.69,
+    "date": "2026-06-01"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 4,
+    "unitPurchase": 178.68,
+    "unitSelling": 261.46,
+    "totalCost": 714.72,
+    "totalRevenue": 1045.84,
+    "profitLoss": 331.12,
+    "date": "2026-06-01"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 7,
+    "unitPurchase": 166.86,
+    "unitSelling": 210.29,
+    "totalCost": 1168.02,
+    "totalRevenue": 1472.03,
+    "profitLoss": 304.01,
+    "date": "2026-06-02"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 4,
+    "unitPurchase": 274.07,
+    "unitSelling": 335.54,
+    "totalCost": 1096.28,
+    "totalRevenue": 1342.16,
+    "profitLoss": 245.88,
+    "date": "2026-06-03"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 6,
+    "unitPurchase": 454.54,
+    "unitSelling": 531.41,
+    "totalCost": 2727.24,
+    "totalRevenue": 3188.46,
+    "profitLoss": 461.22,
+    "date": "2026-06-04"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 7,
+    "unitPurchase": 30.98,
+    "unitSelling": 35.72,
+    "totalCost": 216.86,
+    "totalRevenue": 250.04,
+    "profitLoss": 33.18,
+    "date": "2026-06-04"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 10,
+    "unitPurchase": 280.31,
+    "unitSelling": 360.93,
+    "totalCost": 2803.1,
+    "totalRevenue": 3609.3,
+    "profitLoss": 806.2,
+    "date": "2026-06-04"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 2,
+    "unitPurchase": 179.17,
+    "unitSelling": 198.07,
+    "totalCost": 358.34,
+    "totalRevenue": 396.14,
+    "profitLoss": 37.8,
+    "date": "2026-06-05"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 10,
+    "unitPurchase": 482.77,
+    "unitSelling": 541.83,
+    "totalCost": 4827.7,
+    "totalRevenue": 5418.3,
+    "profitLoss": 590.6,
+    "date": "2026-06-05"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 6,
+    "unitPurchase": 366.22,
+    "unitSelling": 434.45,
+    "totalCost": 2197.32,
+    "totalRevenue": 2606.7,
+    "profitLoss": 409.38,
+    "date": "2026-06-06"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 5,
+    "unitPurchase": 302.0,
+    "unitSelling": 422.71,
+    "totalCost": 1510.0,
+    "totalRevenue": 2113.55,
+    "profitLoss": 603.55,
+    "date": "2026-06-06"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 3,
+    "unitPurchase": 139.63,
+    "unitSelling": 181.7,
+    "totalCost": 418.89,
+    "totalRevenue": 545.1,
+    "profitLoss": 126.21,
+    "date": "2026-06-06"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 10,
+    "unitPurchase": 359.16,
+    "unitSelling": 434.53,
+    "totalCost": 3591.6,
+    "totalRevenue": 4345.3,
+    "profitLoss": 753.7,
+    "date": "2026-06-07"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 2,
+    "unitPurchase": 203.45,
+    "unitSelling": 302.36,
+    "totalCost": 406.9,
+    "totalRevenue": 604.72,
+    "profitLoss": 197.82,
+    "date": "2026-06-08"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 10,
+    "unitPurchase": 345.37,
+    "unitSelling": 504.93,
+    "totalCost": 3453.7,
+    "totalRevenue": 5049.3,
+    "profitLoss": 1595.6,
+    "date": "2026-06-08"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 8,
+    "unitPurchase": 489.37,
+    "unitSelling": 544.35,
+    "totalCost": 3914.96,
+    "totalRevenue": 4354.8,
+    "profitLoss": 439.84,
+    "date": "2026-06-08"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 5,
+    "unitPurchase": 62.61,
+    "unitSelling": 91.21,
+    "totalCost": 313.05,
+    "totalRevenue": 456.05,
+    "profitLoss": 143.0,
+    "date": "2026-06-09"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 8,
+    "unitPurchase": 313.04,
+    "unitSelling": 391.68,
+    "totalCost": 2504.32,
+    "totalRevenue": 3133.44,
+    "profitLoss": 629.12,
+    "date": "2026-06-10"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 8,
+    "unitPurchase": 313.0,
+    "unitSelling": 374.89,
+    "totalCost": 2504.0,
+    "totalRevenue": 2999.12,
+    "profitLoss": 495.12,
+    "date": "2026-06-11"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 1,
+    "unitPurchase": 97.72,
+    "unitSelling": 124.56,
+    "totalCost": 97.72,
+    "totalRevenue": 124.56,
+    "profitLoss": 26.84,
+    "date": "2026-06-12"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 4,
+    "unitPurchase": 287.92,
+    "unitSelling": 355.26,
+    "totalCost": 1151.68,
+    "totalRevenue": 1421.04,
+    "profitLoss": 269.36,
+    "date": "2026-06-13"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 5,
+    "unitPurchase": 94.84,
+    "unitSelling": 134.23,
+    "totalCost": 474.2,
+    "totalRevenue": 671.15,
+    "profitLoss": 196.95,
+    "date": "2026-06-14"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 3,
+    "unitPurchase": 225.36,
+    "unitSelling": 326.58,
+    "totalCost": 676.08,
+    "totalRevenue": 979.74,
+    "profitLoss": 303.66,
+    "date": "2026-06-14"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 8,
+    "unitPurchase": 380.72,
+    "unitSelling": 497.55,
+    "totalCost": 3045.76,
+    "totalRevenue": 3980.4,
+    "profitLoss": 934.64,
+    "date": "2026-06-15"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 4,
+    "unitPurchase": 438.56,
+    "unitSelling": 615.98,
+    "totalCost": 1754.24,
+    "totalRevenue": 2463.92,
+    "profitLoss": 709.68,
+    "date": "2026-06-16"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 3,
+    "unitPurchase": 262.91,
+    "unitSelling": 371.79,
+    "totalCost": 788.73,
+    "totalRevenue": 1115.37,
+    "profitLoss": 326.64,
+    "date": "2026-06-16"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 7,
+    "unitPurchase": 304.78,
+    "unitSelling": 388.26,
+    "totalCost": 2133.46,
+    "totalRevenue": 2717.82,
+    "profitLoss": 584.36,
+    "date": "2026-06-16"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 4,
+    "unitPurchase": 302.08,
+    "unitSelling": 388.02,
+    "totalCost": 1208.32,
+    "totalRevenue": 1552.08,
+    "profitLoss": 343.76,
+    "date": "2026-06-17"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 4,
+    "unitPurchase": 97.8,
+    "unitSelling": 112.1,
+    "totalCost": 391.2,
+    "totalRevenue": 448.4,
+    "profitLoss": 57.2,
+    "date": "2026-06-17"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 3,
+    "unitPurchase": 425.31,
+    "unitSelling": 507.94,
+    "totalCost": 1275.93,
+    "totalRevenue": 1523.82,
+    "profitLoss": 247.89,
+    "date": "2026-06-17"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 2,
+    "unitPurchase": 188.94,
+    "unitSelling": 220.7,
+    "totalCost": 377.88,
+    "totalRevenue": 441.4,
+    "profitLoss": 63.52,
+    "date": "2026-06-18"
+  },
+  {
+    "product": "Monitor",
+    "qtySold": 6,
+    "unitPurchase": 425.4,
+    "unitSelling": 511.64,
+    "totalCost": 2552.4,
+    "totalRevenue": 3069.84,
+    "profitLoss": 517.44,
+    "date": "2026-06-19"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 6,
+    "unitPurchase": 60.29,
+    "unitSelling": 82.19,
+    "totalCost": 361.74,
+    "totalRevenue": 493.14,
+    "profitLoss": 131.4,
+    "date": "2026-06-20"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 9,
+    "unitPurchase": 408.94,
+    "unitSelling": 547.65,
+    "totalCost": 3680.46,
+    "totalRevenue": 4928.85,
+    "profitLoss": 1248.39,
+    "date": "2026-06-21"
+  },
+  {
+    "product": "SSD",
+    "qtySold": 4,
+    "unitPurchase": 102.9,
+    "unitSelling": 117.02,
+    "totalCost": 411.6,
+    "totalRevenue": 468.08,
+    "profitLoss": 56.48,
+    "date": "2026-06-21"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 3,
+    "unitPurchase": 325.31,
+    "unitSelling": 460.73,
+    "totalCost": 975.93,
+    "totalRevenue": 1382.19,
+    "profitLoss": 406.26,
+    "date": "2026-06-22"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 6,
+    "unitPurchase": 491.77,
+    "unitSelling": 705.75,
+    "totalCost": 2950.62,
+    "totalRevenue": 4234.5,
+    "profitLoss": 1283.88,
+    "date": "2026-06-22"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 9,
+    "unitPurchase": 153.54,
+    "unitSelling": 216.42,
+    "totalCost": 1381.86,
+    "totalRevenue": 1947.78,
+    "profitLoss": 565.92,
+    "date": "2026-06-23"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 7,
+    "unitPurchase": 213.89,
+    "unitSelling": 270.46,
+    "totalCost": 1497.23,
+    "totalRevenue": 1893.22,
+    "profitLoss": 395.99,
+    "date": "2026-06-23"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 4,
+    "unitPurchase": 151.42,
+    "unitSelling": 215.6,
+    "totalCost": 605.68,
+    "totalRevenue": 862.4,
+    "profitLoss": 256.72,
+    "date": "2026-06-24"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 5,
+    "unitPurchase": 377.55,
+    "unitSelling": 545.7,
+    "totalCost": 1887.75,
+    "totalRevenue": 2728.5,
+    "profitLoss": 840.75,
+    "date": "2026-06-24"
+  },
+  {
+    "product": "Mouse",
+    "qtySold": 10,
+    "unitPurchase": 471.05,
+    "unitSelling": 598.54,
+    "totalCost": 4710.5,
+    "totalRevenue": 5985.4,
+    "profitLoss": 1274.9,
+    "date": "2026-06-25"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 6,
+    "unitPurchase": 353.32,
+    "unitSelling": 469.46,
+    "totalCost": 2119.92,
+    "totalRevenue": 2816.76,
+    "profitLoss": 696.84,
+    "date": "2026-06-25"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 1,
+    "unitPurchase": 201.22,
+    "unitSelling": 290.8,
+    "totalCost": 201.22,
+    "totalRevenue": 290.8,
+    "profitLoss": 89.58,
+    "date": "2026-06-25"
+  },
+  {
+    "product": "Keyboard",
+    "qtySold": 6,
+    "unitPurchase": 81.39,
+    "unitSelling": 90.28,
+    "totalCost": 488.34,
+    "totalRevenue": 541.68,
+    "profitLoss": 53.34,
+    "date": "2026-06-26"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 9,
+    "unitPurchase": 115.61,
+    "unitSelling": 155.94,
+    "totalCost": 1040.49,
+    "totalRevenue": 1403.46,
+    "profitLoss": 362.97,
+    "date": "2026-06-26"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 4,
+    "unitPurchase": 301.67,
+    "unitSelling": 346.12,
+    "totalCost": 1206.68,
+    "totalRevenue": 1384.48,
+    "profitLoss": 177.8,
+    "date": "2026-06-27"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 10,
+    "unitPurchase": 315.18,
+    "unitSelling": 433.21,
+    "totalCost": 3151.8,
+    "totalRevenue": 4332.1,
+    "profitLoss": 1180.3,
+    "date": "2026-06-27"
+  },
+  {
+    "product": "Laptop",
+    "qtySold": 10,
+    "unitPurchase": 38.19,
+    "unitSelling": 50.8,
+    "totalCost": 381.9,
+    "totalRevenue": 508.0,
+    "profitLoss": 126.1,
+    "date": "2026-06-28"
+  },
+  {
+    "product": "Headset",
+    "qtySold": 8,
+    "unitPurchase": 450.83,
+    "unitSelling": 604.12,
+    "totalCost": 3606.64,
+    "totalRevenue": 4832.96,
+    "profitLoss": 1226.32,
+    "date": "2026-06-28"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 10,
+    "unitPurchase": 312.76,
+    "unitSelling": 442.07,
+    "totalCost": 3127.6,
+    "totalRevenue": 4420.7,
+    "profitLoss": 1293.1,
+    "date": "2026-06-29"
+  },
+  {
+    "product": "Webcam",
+    "qtySold": 3,
+    "unitPurchase": 252.5,
+    "unitSelling": 313.29,
+    "totalCost": 757.5,
+    "totalRevenue": 939.87,
+    "profitLoss": 182.37,
+    "date": "2026-06-30"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 5,
+    "unitPurchase": 266.7,
+    "unitSelling": 391.2,
+    "totalCost": 1333.5,
+    "totalRevenue": 1956.0,
+    "profitLoss": 622.5,
+    "date": "2026-06-30"
+  },
+  {
+    "product": "Printer",
+    "qtySold": 3,
+    "unitPurchase": 243.28,
+    "unitSelling": 289.43,
+    "totalCost": 729.84,
+    "totalRevenue": 868.29,
+    "profitLoss": 138.45,
+    "date": "2026-06-30"
+  }
+]

@@ -6,6 +6,13 @@ import {
   deleteProductRepository,
   deleteAllProductsRepository
 } from "../Repository/repository.js";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dummyDataPath = path.join(__dirname, "..", "dummyData.json");
 
 const addProductService = async (productData, file) => {
   try {
@@ -175,13 +182,34 @@ const deleteAllProductsService = async () => {
   }
 };
 
+const getDummyDataService = async () => {
+  try {
+    const fileContents = await fs.readFile(dummyDataPath, "utf8");
+    const dummyData = JSON.parse(fileContents);
+
+    return {
+      status: 200,
+      success: true,
+      data: dummyData
+    };
+  } catch (err) {
+    return {
+      status: 500,
+      success: false,
+      message: "Unable to load dummy data",
+      error: err.message
+    };
+  }
+};
+
 export {
   addProductService,
   getProductsService,
   getProductByIdService,
   updateProductService,
   deleteProductService,
-  deleteAllProductsService
+  deleteAllProductsService,
+  getDummyDataService
 };
 
 

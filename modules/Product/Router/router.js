@@ -3,6 +3,7 @@ import {
   Addproduct,
   GetProducts,
   GetProductById,
+  GetDummyData,
   UpdateProduct,
   DeleteProduct,
   DeleteAllProducts
@@ -14,6 +15,7 @@ const ProductRouter = express.Router();
 ProductRouter.post("/add", upload.single("img"), Addproduct);
 ProductRouter.get("/get", GetProducts);
 ProductRouter.get("/get/:id", GetProductById);
+ProductRouter.get("/dummy", GetDummyData);
 ProductRouter.put("/update/:id", upload.single("img"), UpdateProduct);
 ProductRouter.delete("/delete/:id", DeleteProduct);
 ProductRouter.delete("/delete-all", DeleteAllProducts);

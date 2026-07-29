@@ -38,8 +38,6 @@ const ebayTokenService = async (bodyData = {}, userId) => {
         const ebayClientSecret = process.env.EBAY_CLIENT_SECRET;
         const redirectUri = process.env.RU_NAME;
 
-        console.log("All comming data", code, ebayClientId, ebayClientSecret, redirectUri);
-
         if (!code) {
             return {
                 success: false,
@@ -122,7 +120,7 @@ const ebayFulfillmentOrdersService = async (req) => {
     try {
         const userId = req.user?.id;
         let accessToken;
-        
+
         try {
             accessToken = await getValidAccessToken(userId);
         } catch (tokenErr) {
@@ -135,16 +133,14 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         const { limit, offset, order_ids } = req?.query || {};
 
-        console.log("token", accessToken);
 
-
-        // if (!accessToken) {
-        //     return {
-        //         success: false,
-        //         status: 400,
-        //         message: "accessToken is required. Provide it as a query param, body field, or Authorization header.",
-        //     };
-        // }
+        if (!accessToken) {
+            return {
+                success: false,
+                status: 400,
+                message: "accessToken is required. Provide it as a query param, body field, or Authorization header.",
+            };
+        }
 
         // const baseUrl = process.env.EBAY_API_BASE_URL || "https://api.ebay.com";
         const baseUrl = "https://api.sandbox.ebay.com"
@@ -164,7 +160,7 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         const responseData = await response.json().catch(() => ({}));
 
-        if (!response.ok) {
+        if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
             return {
                 success: true,
                 status: 200,
@@ -175,6 +171,7 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         return {
             success: true,
+
             status: 200,
             message: "eBay fulfillment orders fetched successfully",
             data: responseData,

@@ -4,7 +4,7 @@ const authorizeAccessToken = (req, res, next) => {
   try {
     const authHeader = req?.headers?.authorization || '';
     const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
-    console.log("my token", token);
+
     if (!token) {
       return res.status(401).json({
         success: false,

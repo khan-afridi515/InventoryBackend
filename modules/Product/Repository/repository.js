@@ -21,33 +21,33 @@ const addProductRepository = async (productData, file) => {
   }
 };
 
-const getProductsRepository = async () => {
+const getProductsRepository = async (userId) => {
   try {
-    const result = await Product.find({});
+    const result = await Product.find(userId ? { userId } : {});
     return result;
   } catch (err) {
     throw err;
   }
 };
 
-const getProductByIdRepository = async (id) => {
+const getProductByIdRepository = async (id, userId) => {
   try {
-    const result = await Product.findById(id);
+    const result = await Product.findOne({ _id: id, userId });
     return result;
   } catch (err) {
     throw err;
   }
 };
 
-const updateProductRepository = async (id, updateData, file) => {
+const updateProductRepository = async (id, userId, updateData, file) => {
   try {
     if (file) {
       let pic = await fileOnCloud(file.path);
       updateData.img = pic.secure_url;
     }
 
-    const result = await Product.findByIdAndUpdate(id, updateData, {
-      new: true,
+    const result = await Product.findOneAndUpdate({ _id: id, userId }, updateData, {
+      returnDocument: 'after',
       runValidators: true,
     });
     return result;
@@ -56,9 +56,9 @@ const updateProductRepository = async (id, updateData, file) => {
   }
 };
 
-const deleteProductRepository = async (id) => {
+const deleteProductRepository = async (id, userId) => {
   try {
-    const result = await Product.findByIdAndDelete(id);
+    const result = await Product.findOneAndDelete({ _id: id, userId });
     return result;
   } catch (err) {
     throw err;

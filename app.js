@@ -1,4 +1,4 @@
-﻿import 'dotenv/config';
+import 'dotenv/config';
 import connectDB from "./database/db.js";
 import express from "express";
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json());
 
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://inventory-frontend-nine-iota.vercel.app"],
     credentials: true
 })
 )

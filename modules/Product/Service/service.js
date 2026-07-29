@@ -14,11 +14,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dummyDataPath = path.join(__dirname, "..", "dummyData.json");
 
+const normalizeProductPayload = (payload = {}) => {
+  const normalizedPayload = { ...payload };
+  const numericFields = ["quantity", "minimumQuantity", "supplierCost", "sellingPrice"];
+
+  numericFields.forEach((field) => {
+    if (normalizedPayload[field] !== undefined && normalizedPayload[field] !== null && normalizedPayload[field] !== "") {
+      normalizedPayload[field] = Number(normalizedPayload[field]);
+    }
+  });
+
+  return normalizedPayload;
+};
+
 const addProductService = async (productData, file) => {
   try {
     console.log("We are in the add product Service and check the file ", file);
-    
-    const result = await addProductRepository(productData, file);
+
+    const normalizedProductData = normalizeProductPayload(productData);
+    const result = await addProductRepository(normalizedProductData, file);
 
     if (!result) {
       return {
@@ -38,9 +52,9 @@ const addProductService = async (productData, file) => {
   }
 };
 
-const getProductsService = async () => {
+const getProductsService = async (userId) => {
   try {
-    const result = await getProductsRepository();
+    const result = await getProductsRepository(userId);
 
     if (!result || result.length === 0) {
       return {
@@ -60,7 +74,7 @@ const getProductsService = async () => {
   }
 };
 
-const getProductByIdService = async (id) => {
+const getProductByIdService = async (id, userId) => {
   try {
     if (!id) {
       return {
@@ -70,7 +84,7 @@ const getProductByIdService = async (id) => {
       };
     }
 
-    const result = await getProductByIdRepository(id);
+    const result = await getProductByIdRepository(id, userId);
 
     if (!result) {
       return {
@@ -90,7 +104,7 @@ const getProductByIdService = async (id) => {
   }
 };
 
-const updateProductService = async (id, updateData, file) => {
+const updateProductService = async (id, userId, updateData, file) => {
   try {
     if (!id) {
       return {
@@ -100,7 +114,8 @@ const updateProductService = async (id, updateData, file) => {
       };
     }
 
-    const sanitizedData = Object.entries(updateData || {}).reduce(
+    const { sku, ...updateDataWithoutSku } = updateData || {};
+    const sanitizedData = Object.entries(updateDataWithoutSku).reduce(
       (acc, [key, value]) => {
         if (value !== undefined && value !== null && value !== "") {
           acc[key] = value;
@@ -118,7 +133,8 @@ const updateProductService = async (id, updateData, file) => {
       };
     }
 
-    const result = await updateProductRepository(id, sanitizedData, file);
+    const normalizedUpdateData = normalizeProductPayload(sanitizedData);
+    const result = await updateProductRepository(id, userId, normalizedUpdateData, file);
 
     if (!result) {
       return {
@@ -139,7 +155,7 @@ const updateProductService = async (id, updateData, file) => {
   }
 };
 
-const deleteProductService = async (id) => {
+const deleteProductService = async (id, userId) => {
   try {
     if (!id) {
       return {
@@ -149,7 +165,7 @@ const deleteProductService = async (id) => {
       };
     }
 
-    const result = await deleteProductRepository(id);
+    const result = await deleteProductRepository(id, userId);
 
     if (!result) {
       return {

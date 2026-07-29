@@ -10,7 +10,22 @@
 
 const Addproduct = async (req, res) => {
   try {
-    const result = await addProductService(req.body, req.file);
+    const userId = req.user?.id || req.user?._id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "User authentication is required"
+      });
+    }
+
+    const { sku, ...payloadWithoutSku } = req.body || {};
+    const productPayload = {
+      ...payloadWithoutSku,
+      userId,
+    };
+
+    const result = await addProductService(productPayload, req.file);
     return res.status(result.status).json(result);
   } catch (error) {
     console.log("We are in the add product ", error.message);
@@ -24,7 +39,8 @@ const Addproduct = async (req, res) => {
 
 const GetProducts = async (req, res) => {
   try {
-    const result = await getProductsService();
+    const userId = req.user?.id || req.user?._id;
+    const result = await getProductsService(userId);
     return res.status(result.status).json(result);
   } catch (error) {
     res.status(error.status || 500).json({
@@ -37,7 +53,8 @@ const GetProducts = async (req, res) => {
 const GetProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await getProductByIdService(id);
+    const userId = req.user?.id || req.user?._id;
+    const result = await getProductByIdService(id, userId);
     return res.status(result.status).json(result);
   } catch (error) {
     res.status(error.status || 500).json({
@@ -62,7 +79,8 @@ const GetDummyData = async (req, res) => {
 const UpdateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await updateProductService(id, req.body, req.file);
+    const userId = req.user?.id || req.user?._id;
+    const result = await updateProductService(id, userId, req.body, req.file);
     return res.status(result.status).json(result);
   } catch (error) {
     res.status(error.status || 500).json({
@@ -75,7 +93,8 @@ const UpdateProduct = async (req, res) => {
 const DeleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await deleteProductService(id);
+    const userId = req.user?.id || req.user?._id;
+    const result = await deleteProductService(id, userId);
     return res.status(result.status).json(result);
   } catch (error) {
     res.status(error.status || 500).json({

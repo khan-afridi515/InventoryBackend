@@ -3,6 +3,7 @@ import { validateUserRegistrationData  } from "../validation/validate.js";
 import { settingResponse } from "../utills/settingResponse.js";
 import formatApiError from "../utills/formatApiError.js";
 import { ebayFulfillmentOrdersService, ebayTokenService, ebayOrderConfirmationNotificationService, ebayOrderConfirmationChallengeService, emailVarifyService, emailVerifyService, forgotOtpVerifyService, myProfileService, resendEmailVerificationOTPService, resetPasswordservice, userLoginService, userRegistrationService } from "../services/services.js";
+import { processEbayOrderNotification, handleEbayChallenge } from "../services/ebayWebhookService.js";
 import { handledServiceResult } from "../utills/handleError.js";
 
 
@@ -142,7 +143,8 @@ const myProfileController = async (req, res) => {
 
 const ebayTokenController = async (req, res) => {
     try {
-        const result = await ebayTokenService(req.body);
+        const userId = req.user?.id;
+        const result = await ebayTokenService(req.body, userId);
         return res.status(result.status).json(result);
     } catch (err) {
         console.error("Error in ebayTokenController:", err);
@@ -166,14 +168,16 @@ const ebayFulfillmentOrdersController = async (req, res) => {
     }
 };
 
+// Step 3: Controller receives the webhook request and passes it to the service layer
 const ebayOrderConfirmationNotificationController = async (req, res) => {
     try {
-        const result = await ebayOrderConfirmationNotificationService(req);
+        const result = await processEbayOrderNotification(req);
         return res.status(result.status).json(result);
     } catch (err) {
         console.error("Error in ebayOrderConfirmationNotificationController:", err);
         return res.status(500).json({
             success: false,
+            status: 500,
             message: err.message || "Internal server error",
         });
     }
@@ -190,20 +194,21 @@ const ebayOrderConfirmationNotificationController = async (req, res) => {
  *   Content-Type: application/json
  *   { "challengeResponse": "<sha256-hex-string>" }
  */
+// Step 4: Controller handles eBay endpoint verification challenge
 const ebayOrderConfirmationChallengeController = async (req, res) => {
     try {
-        const result = await ebayOrderConfirmationChallengeService(req);
+        const result = handleEbayChallenge(req);
 
         if (!result.success) {
             return res.status(result.status).json({ success: false, message: result.message });
         }
 
-        // eBay requires EXACTLY this JSON shape and Content-Type
         return res.status(200).json({ challengeResponse: result.challengeResponse });
     } catch (err) {
         console.error("Error in ebayOrderConfirmationChallengeController:", err);
         return res.status(500).json({
             success: false,
+            status: 500,
             message: err.message || "Internal server error",
         });
     }

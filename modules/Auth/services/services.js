@@ -160,7 +160,8 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         const responseData = await response.json().catch(() => ({}));
 
-        if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
+        // if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
+        if (!response.ok) {
             return {
                 success: true,
                 status: 200,

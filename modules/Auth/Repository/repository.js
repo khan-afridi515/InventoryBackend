@@ -119,10 +119,7 @@ const userLoginRepository = async (loginData) => {
         console.log("Repository user:", emailexist);
 
         if (!emailexist) {
-            return {
-                success: false,
-                status: 401
-            }
+            return null;
         }
         return emailexist;
 

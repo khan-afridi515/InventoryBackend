@@ -3,7 +3,7 @@ import { validateUserRegistrationData  } from "../validation/validate.js";
 import { settingResponse } from "../utills/settingResponse.js";
 import formatApiError from "../utills/formatApiError.js";
 import { ebayFulfillmentOrdersService, ebayTokenService, ebayOrderConfirmationNotificationService, ebayOrderConfirmationChallengeService, emailVarifyService, emailVerifyService, forgotOtpVerifyService, myProfileService, resendEmailVerificationOTPService, resetPasswordservice, userLoginService, userRegistrationService } from "../services/services.js";
-import { processEbayOrderNotification, handleEbayChallenge } from "../services/ebayWebhookService.js";
+import { processEbayOrderNotification, getAllNotifications, handleEbayChallenge } from "../services/ebayWebhookService.js";
 import { handledServiceResult } from "../utills/handleError.js";
 
 
@@ -66,7 +66,10 @@ const userLoginController = async (req, res) => {
         const result = await userLoginService(req.body);
         
         if (!result.success) {
-            return res.status(result.status).json({ wrn: result.msg });
+            return res.status(result.status).json({
+                success: false,
+                message: result.msg || result.message
+            });
         }
 
         return res.status(200).json({
@@ -183,6 +186,20 @@ const ebayOrderConfirmationNotificationController = async (req, res) => {
     }
 };
 
+const getAllNotificationsController = async (req, res) => {
+    try {
+        const result = await getAllNotifications();
+        return res.status(result.status).json(result);
+    } catch (err) {
+        console.error("Error in getAllNotificationsController:", err);
+        return res.status(500).json({
+            success: false,
+            status: 500,
+            message: err.message || "Internal server error",
+        });
+    }
+};
+
 /**
  * GET /ebay/order-confirmation
  *
@@ -214,4 +231,4 @@ const ebayOrderConfirmationChallengeController = async (req, res) => {
     }
 };
 
-export { userRegistrationController, verifyEmailOTPController, resendEmailVerificationOTPController, userLoginController, emailVerifyController, verifyForgotOtp, resetPasswordController, myProfileController, ebayTokenController, ebayFulfillmentOrdersController, ebayOrderConfirmationNotificationController, ebayOrderConfirmationChallengeController}
+export { userRegistrationController, verifyEmailOTPController, resendEmailVerificationOTPController, userLoginController, emailVerifyController, verifyForgotOtp, resetPasswordController, myProfileController, ebayTokenController, ebayFulfillmentOrdersController, getAllNotificationsController, ebayOrderConfirmationNotificationController, ebayOrderConfirmationChallengeController}

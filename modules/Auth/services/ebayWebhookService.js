@@ -139,6 +139,20 @@ const processEbayOrderNotification = async (req) => {
   }
 };
 
+const getAllNotifications = async () => {
+  try {
+    const notifications = await Notification.find().sort({ eventDate: -1, createdAt: -1 });
+    return {
+      success: true,
+      status: 200,
+      data: notifications,
+    };
+  } catch (error) {
+    logger.error('Error retrieving eBay notifications', { message: error.message });
+    return { success: false, status: 500, message: error.message || 'Failed to fetch notifications' };
+  }
+};
+
 // Step 10: Generate the eBay challenge response for endpoint verification
 const handleEbayChallenge = (req) => {
   const challengeCode = req.query?.challenge_code || req.query?.challengeCode;
@@ -155,4 +169,4 @@ const handleEbayChallenge = (req) => {
   };
 };
 
-export { processEbayOrderNotification, handleEbayChallenge };
+export { processEbayOrderNotification, getAllNotifications, handleEbayChallenge };

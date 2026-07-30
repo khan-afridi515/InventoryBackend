@@ -160,8 +160,8 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         const responseData = await response.json().catch(() => ({}));
 
-        // if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
-        if (!response.ok) {
+        if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
+            if (!response.ok) {
             return {
                 success: true,
                 status: 200,
@@ -432,7 +432,7 @@ const userLoginService = async (loginData) => {
             return {
                 success: false,
                 status: 404,
-                msg: "Email doesn't exist!"
+                msg: "Email doesn't found"
             };
         }
 
@@ -465,7 +465,7 @@ const userLoginService = async (loginData) => {
                 return {
                     success: false,
                     status: 401,
-                    msg: "Password doesn't match!"
+                    msg: "Password doesn't match"
                 };
             }
 

@@ -132,8 +132,7 @@ const ebayFulfillmentOrdersService = async (req) => {
         }
 
         const { limit, offset, order_ids } = req?.query || {};
-
-
+ 
         if (!accessToken) {
             return {
                 success: false,
@@ -141,7 +140,7 @@ const ebayFulfillmentOrdersService = async (req) => {
                 message: "accessToken is required. Provide it as a query param, body field, or Authorization header.",
             };
         }
-
+ 
         // const baseUrl = process.env.EBAY_API_BASE_URL || "https://api.ebay.com";
         const baseUrl = "https://api.sandbox.ebay.com"
         const params = new URLSearchParams();
@@ -149,7 +148,7 @@ const ebayFulfillmentOrdersService = async (req) => {
         if (limit) params.set("limit", limit);
         if (offset) params.set("offset", offset);
         if (order_ids) params.set("order_ids", order_ids);
-
+ 
         const url = `${baseUrl}/sell/fulfillment/v1/order${params.toString() ? `?${params.toString()}` : ""}`;
 
         const response = await fetch(url, {
@@ -161,7 +160,7 @@ const ebayFulfillmentOrdersService = async (req) => {
         const responseData = await response.json().catch(() => ({}));
 
         if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
-            if (!response.ok) {
+            // if (!response.ok) {
             return {
                 success: true,
                 status: 200,
@@ -185,6 +184,87 @@ const ebayFulfillmentOrdersService = async (req) => {
         };
     }
 };
+
+
+
+// const ebayFulfillmentOrdersService = async (req) => {
+//     try {
+//         const userId = req.user?.id;
+
+//         let accessToken;
+
+//         try {
+//             accessToken = await getValidAccessToken(userId);
+//         } catch (tokenErr) {
+//             return {
+//                 success: false,
+//                 status: 401,
+//                 message:
+//                     tokenErr.message ||
+//                     "Failed to get valid eBay access token",
+//             };
+//         }
+
+//         const { limit, offset, order_ids } = req?.query || {};
+
+//         if (!accessToken) {
+//             return {
+//                 success: false,
+//                 status: 400,
+//                 message: "eBay access token is required.",
+//             };
+//         }
+
+//         const baseUrl = "https://api.sandbox.ebay.com";
+
+//         const params = new URLSearchParams();
+
+//         if (limit) params.set("limit", limit);
+//         if (offset) params.set("offset", offset);
+//         if (order_ids) params.set("order_ids", order_ids);
+
+//         const url =
+//             `${baseUrl}/sell/fulfillment/v1/order` +
+//             (params.toString() ? `?${params.toString()}` : "");
+
+//         const response = await fetch(url, {
+//             method: "GET",
+//             headers: {
+//                 Authorization: `Bearer ${accessToken}`,
+//                 Accept: "application/json",
+//             },
+//         });
+
+//         const responseData = await response.json().catch(() => ({}));
+
+//         // eBay returned an error
+//         if (!response.ok) {
+//             return {
+//                 success: false,
+//                 status: response.status,
+//                 message:
+//                     responseData?.errors?.[0]?.message ||
+//                     "Failed to fetch eBay fulfillment orders",
+//                 data: responseData,
+//             };
+//         }
+
+//         return {
+//             success: true,
+//             status: 200,
+//             message: "eBay fulfillment orders fetched successfully",
+//             data: responseData,
+//         };
+//     } catch (error) {
+//         return {
+//             success: false,
+//             status: 500,
+//             message:
+//                 error.message ||
+//                 "Failed to fetch eBay fulfillment orders",
+//         };
+//     }
+// };
 
 const ebayOrderConfirmationNotificationService = async (req) => {
     try {

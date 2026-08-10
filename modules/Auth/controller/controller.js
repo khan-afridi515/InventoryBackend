@@ -6,7 +6,59 @@ import { ebayFulfillmentOrdersService, ebayTokenService, ebayOrderConfirmationNo
 import { processEbayOrderNotification, getAllNotifications, handleEbayChallenge } from "../services/ebayWebhookService.js";
 import { handledServiceResult } from "../utills/handleError.js";
 
+import {
+  ebayDeletionChallengeService,
+  ebayDeletionNotificationService,
+} from "../services/ebayWebhookService.js";
 
+// GET - eBay endpoint verification
+export const ebayDeletionChallengeController = async (req, res) => {
+  try {
+    const { challenge_code } = req.query;
+
+    if (!challenge_code) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing challenge_code",
+      });
+    }
+
+    const result = await ebayDeletionChallengeService(challenge_code);
+
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error("eBay deletion challenge error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Challenge verification failed",
+    });
+  }
+};
+
+
+// POST - eBay deletion notification
+export const ebayDeletionNotificationController = async (req, res) => {
+  try {
+    console.log(
+      "eBay deletion notification:",
+      JSON.stringify(req.body, null, 2)
+    );
+
+    const result = await ebayDeletionNotificationService(req.body);
+
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error("eBay deletion notification error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to process deletion notification",
+    });
+  }
+};
 
 const userRegistrationController = async (req, res) => {
   try {

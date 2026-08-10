@@ -1,5 +1,5 @@
 import express from "express";
-import { ebayFulfillmentOrdersController, ebayOrderConfirmationNotificationController, ebayOrderConfirmationChallengeController, ebayTokenController, emailVerifyController, myProfileController, resendEmailVerificationOTPController, resetPasswordController, userLoginController, userRegistrationController, verifyEmailOTPController, verifyForgotOtp, getAllNotificationsController } from "../controller/controller.js";
+import { ebayFulfillmentOrdersController, ebayOrderConfirmationNotificationController, ebayOrderConfirmationChallengeController, ebayTokenController, emailVerifyController, myProfileController, resendEmailVerificationOTPController, resetPasswordController, userLoginController, userRegistrationController, verifyEmailOTPController, verifyForgotOtp, getAllNotificationsController, ebayDeletionChallengeController, ebayDeletionNotificationController } from "../controller/controller.js";
 import verifyEbaySignature from "../middleware/verifyEbaySignature.js";
 import { authorizeAccessToken } from "../../../shared/authorizeAccessToken.js";
 
@@ -27,6 +27,17 @@ AuthRouter.get('/ebay/order-confirmation', ebayOrderConfirmationChallengeControl
 
 // Step 2: eBay sends POST notifications to this webhook endpoint
 AuthRouter.post('/ebay/order-confirmation', verifyEbaySignature, ebayOrderConfirmationNotificationController);
+
+AuthRouter.get(
+  "/ebay/account-deletion",
+  ebayDeletionChallengeController
+);
+
+// eBay sends deletion notification
+AuthRouter.post(
+  "/ebay/account-deletion",
+  ebayDeletionNotificationController
+);
 
 export { AuthRouter };
 

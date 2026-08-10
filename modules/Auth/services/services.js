@@ -159,8 +159,8 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         const responseData = await response.json().catch(() => ({}));
 
-        if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
-            // if (!response.ok) {
+        // if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
+            if (!response.ok) {
             return {
                 success: true,
                 status: 200,
@@ -171,10 +171,10 @@ const ebayFulfillmentOrdersService = async (req) => {
 
         return {
             success: true,
-
             status: 200,
             message: "eBay fulfillment orders fetched successfully",
-            data: responseData,
+            ebaydata: responseData,
+            data : dummyData
         };
     } catch (error) {
         return {

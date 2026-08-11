@@ -5,59 +5,129 @@ import formatApiError from "../utills/formatApiError.js";
 import { ebayFulfillmentOrdersService, ebayTokenService, ebayOrderConfirmationNotificationService, ebayOrderConfirmationChallengeService, emailVarifyService, emailVerifyService, forgotOtpVerifyService, myProfileService, resendEmailVerificationOTPService, resetPasswordservice, userLoginService, userRegistrationService } from "../services/services.js";
 import { processEbayOrderNotification, getAllNotifications, handleEbayChallenge } from "../services/ebayWebhookService.js";
 import { handledServiceResult } from "../utills/handleError.js";
-
+import crypto from "crypto";
 import {
   ebayDeletionChallengeService,
   ebayDeletionNotificationService,
 } from "../services/ebayWebhookService.js";
 
 // GET - eBay endpoint verification
+// export const ebayDeletionChallengeController = async (req, res) => {
+//   try {
+//     const { challenge_code } = req.query;
+
+//     if (!challenge_code) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Missing challenge_code",
+//       });
+//     }
+
+//     const result = await ebayDeletionChallengeService(challenge_code);
+
+//     return res.status(200).json(result);
+
+//   } catch (error) {
+//     console.error("eBay deletion challenge error:", error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: error.message || "Challenge verification failed",
+//     });
+//   }
+// };
+
+
+
 export const ebayDeletionChallengeController = async (req, res) => {
-  try {
-    const { challenge_code } = req.query;
+    try {
+        const { challenge_code } = req.query;
 
-    if (!challenge_code) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing challenge_code",
-      });
+        // Log the challenge code sent by eBay
+        console.log(
+            "eBay Marketplace Deletion Challenge Code:",
+            challenge_code
+        );
+
+        if (!challenge_code) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing challenge_code",
+            });
+        }
+
+        const result =
+            await ebayDeletionChallengeService(
+                challenge_code
+            );
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.error(
+            "eBay deletion challenge error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Challenge verification failed",
+        });
     }
-
-    const result = await ebayDeletionChallengeService(challenge_code);
-
-    return res.status(200).json(result);
-
-  } catch (error) {
-    console.error("eBay deletion challenge error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Challenge verification failed",
-    });
-  }
 };
 
 
+
+
+
 // POST - eBay deletion notification
+// export const ebayDeletionNotificationController = async (req, res) => {
+//   try {
+//     console.log(
+//       "eBay deletion notification:",
+//       JSON.stringify(req.body, null, 2)
+//     );
+
+//     const result = await ebayDeletionNotificationService(req.body);
+
+//     return res.status(200).json(result);
+
+//   } catch (error) {
+//     console.error("eBay deletion notification error:", error);
+
+//     return res.status(500).json({
+//       success: false,
+//       message: error.message || "Failed to process deletion notification",
+//     });
+//   }
+// };
+
 export const ebayDeletionNotificationController = async (req, res) => {
-  try {
-    console.log(
-      "eBay deletion notification:",
-      JSON.stringify(req.body, null, 2)
-    );
+    try {
+        console.log("eBay deletion notification received");
 
-    const result = await ebayDeletionNotificationService(req.body);
+        const result = await ebayDeletionNotificationService(
+            req.body
+        );
 
-    return res.status(200).json(result);
+        // eBay requires a successful HTTP response
+        return res.status(200).json(result);
 
-  } catch (error) {
-    console.error("eBay deletion notification error:", error);
+    } catch (error) {
+        console.error(
+            "eBay deletion notification error:",
+            error
+        );
 
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Failed to process deletion notification",
-    });
-  }
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Failed to process deletion notification",
+        });
+    }
 };
 
 const userRegistrationController = async (req, res) => {

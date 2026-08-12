@@ -355,12 +355,18 @@ const processEbayOrderNotification = async (req) => {
     const orderDetails = await fetchEbayOrderDetails(orderId, accessToken);
 
     const orderLineItems = orderDetails?.orderLineItems || [];
-    const skuItems = orderLineItems.map((item) => ({
-      productId: item?.productId || item?.lineItem?.productId || item?.productId || '',
-      sku: item?.sku || item?.lineItem?.sku || item?.skuId || '',
-      productName: item?.productName || item?.lineItem?.productName || item?.title || item?.name || '',
-      quantity: Number(item?.quantity || item?.lineItem?.quantity || 0),
-    })).filter((item) => item.productId || item.sku || item.productName);
+    const skuItems = orderLineItems.map((item) => {
+      const rawSku = item?.sku || item?.lineItem?.sku || item?.skuId;
+      const rawProductId = item?.productId || item?.lineItem?.productId || item?.productId;
+      const rawProductName = item?.productName || item?.lineItem?.productName || item?.title || item?.name;
+
+      return {
+        productId: rawProductId !== undefined && rawProductId !== null ? String(rawProductId).trim() : '',
+        sku: rawSku !== undefined && rawSku !== null ? String(rawSku).trim() : '',
+        productName: rawProductName !== undefined && rawProductName !== null ? String(rawProductName).trim() : '',
+        quantity: Number(item?.quantity || item?.lineItem?.quantity || 0),
+      };
+    }).filter((item) => item.productId || item.sku || item.productName);
 
     // Step 7: Fetch matching products and update inventory quantities
     const products = [];
@@ -377,7 +383,7 @@ const processEbayOrderNotification = async (req) => {
       }
 
       if (!product && lineItem.sku) {
-        product = await Product.findOne({ sku: lineItem.sku });
+        product = await Product.findOne({ sku: String(lineItem.sku).trim() });
       }
 
       if (!product && lineItem.productName) {

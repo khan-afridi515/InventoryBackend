@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema({
     productName: { type: String, required: true, trim: true },
     productId: { type: String, trim: true, sparse: true },
+    sku: { type: String, trim: true, unique: true, sparse: true },
     quantity: { type: Number, required: true, min: 0 },
     minimumQuantity: { type: Number, required: true, min: 0, default: 0 },
     supplierCost: { type: Number, required: true, min: 0 },

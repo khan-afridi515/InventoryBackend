@@ -24,6 +24,10 @@ const normalizeProductPayload = (payload = {}) => {
     }
   });
 
+  if (normalizedPayload.sku !== undefined && normalizedPayload.sku !== null) {
+    normalizedPayload.sku = String(normalizedPayload.sku).trim();
+  }
+
   return normalizedPayload;
 };
 
@@ -114,8 +118,7 @@ const updateProductService = async (id, userId, updateData, file) => {
       };
     }
 
-    const { sku, ...updateDataWithoutSku } = updateData || {};
-    const sanitizedData = Object.entries(updateDataWithoutSku).reduce(
+    const sanitizedData = Object.entries(updateData || {}).reduce(
       (acc, [key, value]) => {
         if (value !== undefined && value !== null && value !== "") {
           acc[key] = value;

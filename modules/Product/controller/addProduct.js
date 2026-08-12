@@ -7,6 +7,7 @@
   deleteProductService,
   deleteAllProductsService
 } from "../Service/service.js";
+import formatApiError from "../../Auth/utills/formatApiError.js";
 
 const Addproduct = async (req, res) => {
   try {
@@ -19,9 +20,8 @@ const Addproduct = async (req, res) => {
       });
     }
 
-    const { sku, ...payloadWithoutSku } = req.body || {};
     const productPayload = {
-      ...payloadWithoutSku,
+      ...req.body,
       userId,
     };
 
@@ -29,10 +29,11 @@ const Addproduct = async (req, res) => {
     return res.status(result.status).json(result);
   } catch (error) {
     console.log("We are in the add product ", error.message);
-    
-    res.status(error.status || 500).json({
+    const apiError = formatApiError(error, "Failed to add product");
+
+    res.status(apiError.status || 500).json({
       success: false,
-      message: error.message || "Failed to add product"
+      message: apiError.message || "Failed to add product"
     });
   }
 };
@@ -83,9 +84,10 @@ const UpdateProduct = async (req, res) => {
     const result = await updateProductService(id, userId, req.body, req.file);
     return res.status(result.status).json(result);
   } catch (error) {
-    res.status(error.status || 500).json({
+    const apiError = formatApiError(error, "Failed to update product");
+    res.status(apiError.status || 500).json({
       success: false,
-      message: error.message || "Failed to update product"
+      message: apiError.message || "Failed to update product"
     });
   }
 };

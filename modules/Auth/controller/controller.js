@@ -292,7 +292,6 @@ const ebayFulfillmentOrdersController = async (req, res) => {
         });
     }
 };
-
 // Step 3: Controller receives the webhook request and passes it to the service layer
 const ebayOrderConfirmationNotificationController = async (req, res) => {
     try {

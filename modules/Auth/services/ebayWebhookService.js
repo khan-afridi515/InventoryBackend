@@ -208,7 +208,7 @@ export const ebayDeletionNotificationService = async (
 ) => {
     try {
         console.log(
-            "Processing eBay deletion notification..."
+            "Processing eBay deletion notification...", notification
         );
 
         // -----------------------------------------

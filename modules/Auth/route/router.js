@@ -20,7 +20,7 @@ AuthRouter.post('/new-password', resetPasswordController);
 AuthRouter.post('/profile', myProfileController);
 AuthRouter.post('/ebay/token', authorizeAccessToken, ebayTokenController);
 AuthRouter.get('/ebay/orders', authorizeAccessToken, ebayFulfillmentOrdersController);
-AuthRouter.get('/ebay/notifications', authorizeAccessToken, getAllNotificationsController);
+// AuthRouter.get('/ebay/notifications', authorizeAccessToken, getAllNotificationsController);
 
 // Step 1: eBay uses GET for endpoint verification challenge
 AuthRouter.get('/ebay/order-confirmation', ebayOrderConfirmationChallengeController);
@@ -36,6 +36,7 @@ AuthRouter.get(
 // eBay sends deletion notification
 AuthRouter.post(
   "/ebay/account-deletion",
+  verifyEbaySignature,
   ebayDeletionNotificationController
 );
 

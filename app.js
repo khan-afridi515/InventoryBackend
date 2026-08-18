@@ -2,7 +2,7 @@ import 'dotenv/config';
 import connectDB from "./database/db.js";
 import express from "express";
 const app = express();
-import { AuthRouter } from './modules/Auth/index.js';
+import { AuthRouter, NotificationApiRouter } from './modules/Auth/index.js';
 import { ProductRouter } from './modules/Product/index.js';
 import cors from 'cors';
 
@@ -20,6 +20,7 @@ app.use(cors({
 connectDB();
 
 app.use('/api/v1', AuthRouter);
+app.use('/api/v1/ebay/notifications', NotificationApiRouter);
 app.use('/api/v1', ProductRouter);
 
 

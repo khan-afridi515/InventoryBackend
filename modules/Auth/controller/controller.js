@@ -78,10 +78,6 @@ export const ebayDeletionChallengeController = async (req, res) => {
     }
 };
 
-
-
-
-
 // POST - eBay deletion notification
 // export const ebayDeletionNotificationController = async (req, res) => {
 //   try {

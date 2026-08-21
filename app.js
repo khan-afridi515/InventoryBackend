@@ -20,7 +20,7 @@ app.use(cors({
 connectDB();
 
 app.use('/api/v1', AuthRouter);
-app.use('/api/v1/ebay/notifications', NotificationApiRouter);
+app.use('/api/v1', NotificationApiRouter);
 app.use('/api/v1', ProductRouter);
 
 

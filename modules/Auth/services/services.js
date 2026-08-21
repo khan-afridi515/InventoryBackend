@@ -141,40 +141,65 @@ const ebayFulfillmentOrdersService = async (req) => {
             };
         }
  
-        // const baseUrl = process.env.EBAY_API_BASE_URL || "https://api.ebay.com";
-        const baseUrl = "https://api.sandbox.ebay.com"
-        const params = new URLSearchParams();
+        const baseUrl = process.env.EBAY_API_BASE_URL || "https://api.sandbox.ebay.com";
+        const pageSize = Math.min(Math.max(Number.parseInt(limit, 10) || 200, 1), 200);
+        let nextOffset = Math.max(Number.parseInt(offset, 10) || 0, 0);
+        const orders = [];
+        let responseData = {};
 
-        if (limit) params.set("limit", limit);
-        if (offset) params.set("offset", offset);
-        if (order_ids) params.set("order_ids", order_ids);
- 
-        const url = `${baseUrl}/sell/fulfillment/v1/order${params.toString() ? `?${params.toString()}` : ""}`;
+        do {
+            const params = new URLSearchParams({
+                limit: String(pageSize),
+                offset: String(nextOffset),
+            });
 
-        const response = await fetch(url, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+            if (order_ids) params.set("order_ids", order_ids);
 
-        const responseData = await response.json().catch(() => ({}));
+            const url = `${baseUrl}/sell/fulfillment/v1/order?${params.toString()}`;
+            const response = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    Accept: "application/json",
+                },
+            });
 
-        // if (!response.ok || !responseData || !responseData.orders || responseData.orders.length === 0) {
+            responseData = await response.json().catch(() => ({}));
+
             if (!response.ok) {
-            return {
-                success: true,
-                status: 200,
-                message: "Fetched dummy data as fallback",
-                data: dummyData,
-            };
-        }
+                return {
+                    success: false,
+                    status: response.status,
+                    message: responseData?.errors?.[0]?.message || "Failed to fetch eBay fulfillment orders",
+                    data: responseData,
+                };
+            }
+
+            const pageOrders = Array.isArray(responseData.orders) ? responseData.orders : [];
+            orders.push(...pageOrders);
+            nextOffset += pageOrders.length;
+
+            const total = Number(responseData.total);
+            const reachedEnd = Number.isFinite(total)
+                ? nextOffset >= total
+                : pageOrders.length < pageSize;
+
+            if (pageOrders.length === 0 || reachedEnd) {
+                break;
+            }
+        } while (true);
+
+        const allOrdersData = {
+            ...responseData,
+            orders,
+            total: Number(responseData.total || orders.length),
+        };
 
         return {
             success: true,
             status: 200,
             message: "eBay fulfillment orders fetched successfully",
-            ebaydata: responseData,
-            data : dummyData
+            ebaydata: allOrdersData,
+            data: dummyData,
         };
     } catch (error) {
         return {

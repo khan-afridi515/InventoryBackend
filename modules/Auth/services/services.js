@@ -64,8 +64,8 @@ const ebayTokenService = async (bodyData = {}, userId) => {
 
         const authorizationHeader = Buffer.from(`${ebayClientId}:${ebayClientSecret}`).toString("base64");
 
-        // const response = await fetch("https://api.ebay.com/identity/v1/oauth2/token", {
-        const response = await fetch("https://api.sandbox.ebay.com/identity/v1/oauth2/token", {
+        const response = await fetch("https://api.ebay.com/identity/v1/oauth2/token", {
+        // const response = await fetch("https://api.sandbox.ebay.com/identity/v1/oauth2/token", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -141,7 +141,8 @@ const ebayFulfillmentOrdersService = async (req) => {
             };
         }
  
-        const baseUrl = process.env.EBAY_API_BASE_URL || "https://api.sandbox.ebay.com";
+        const baseUrl = "https://api.ebay.com";
+        // const baseUrl = "https://api.sandbox.ebay.com";
         const pageSize = Math.min(Math.max(Number.parseInt(limit, 10) || 200, 1), 200);
         let nextOffset = Math.max(Number.parseInt(offset, 10) || 0, 0);
         const orders = [];

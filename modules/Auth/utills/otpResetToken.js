@@ -7,7 +7,7 @@ dotenv.config();
 const issueToken = async (payload, option = {}) => {
 
     try {
-        const secretKey = process.env.ACCESS_Token_SECRET_Key;
+        const secretKey = process.env.ACCESS_TOKEN_SECRET_KEY;
 
         if (!secretKey) {
             throw new Error("JWT_SECRET not found");

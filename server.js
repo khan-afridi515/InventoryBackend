@@ -8,7 +8,9 @@ import { initializeSocket } from "./socket/index.js";
 const server = http.createServer(app);
 initializeSocket(server);
 
-server.listen(3000, () => {
-    console.log("Port is running on 3000");
+const port = Number(process.env.PORT) || 3000;
+
+server.listen(port, "0.0.0.0", () => {
+    console.log(`Port is running on ${port}`);
 });
 

@@ -4,7 +4,7 @@ import dns from "dns";
 
 const connectDB = async () => {
     try {
-        const uri = process.env.db_url;
+        const uri = process.env.DB_URL;
         if (!uri || typeof uri !== 'string') {
             throw new Error('MongoDB URI is missing or invalid. Set db_url in your .env file.');
         }

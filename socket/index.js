@@ -2,10 +2,18 @@ import { Server } from 'socket.io';
 
 let io;
 
+const allowedOrigins = (process.env.CORS_ORIGINS || [
+  'http://localhost:5173',
+  'https://inventory-frontend-nine-iota.vercel.app',
+].join(','))
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 const initializeSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: ['http://localhost:5173', 'https://inventory-frontend-nine-iota.vercel.app'],
+      origin: allowedOrigins,
       credentials: true,
     },
   });

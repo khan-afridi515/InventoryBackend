@@ -66,11 +66,11 @@ export const ebayDeletionChallengeService = async (
         // eBay Marketplace Account Deletion
         // verification token
         const verificationToken =
-            process.env.EBAY_DELETION_VERIFICATION_TOKEN;
+            process.env.EBAY_VERIFICATION_TOKEN;
 
         // Exact endpoint URL registered with eBay
         const endpoint =
-            process.env.EBAY_DELETION_ENDPOINT;
+            process.env.EBAY_NOTIFICATION_ENDPOINT_URL;
 
         if (!verificationToken) {
             throw new Error(
@@ -84,13 +84,7 @@ export const ebayDeletionChallengeService = async (
             );
         }
 
-        // eBay requires:
-        // SHA256(
-        //   challenge_code +
-        //   verification_token +
-        //   endpoint
-        // )
-
+        // eBay requires a sha256 hash of challengeCode + verificationToken + endpoint.
         const hash = crypto.createHash("sha256");
 
         hash.update(challengeCode);

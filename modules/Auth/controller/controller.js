@@ -5,11 +5,12 @@ import formatApiError from "../utills/formatApiError.js";
 import { ebayFulfillmentOrdersService, ebayTokenService, ebayOrderConfirmationNotificationService, ebayOrderConfirmationChallengeService, emailVarifyService, emailVerifyService, forgotOtpVerifyService, myProfileService, resendEmailVerificationOTPService, resetPasswordservice, userLoginService, userRegistrationService } from "../services/services.js";
 import { processEbayOrderNotification, getAllNotifications, handleEbayChallenge } from "../services/ebayWebhookService.js";
 import { handledServiceResult } from "../utills/handleError.js";
-import crypto from "crypto";
 import {
   ebayDeletionChallengeService,
   ebayDeletionNotificationService,
 } from "../services/ebayWebhookService.js";
+import EventNotificationSDK from "event-notification-nodejs-sdk";
+import { ebayNotificationConfig, environment } from "../../../config/ebayNotificationConfig.js";
 
 // GET - eBay endpoint verification
 // export const ebayDeletionChallengeController = async (req, res) => {
@@ -78,38 +79,29 @@ export const ebayDeletionChallengeController = async (req, res) => {
     }
 };
 
-// POST - eBay deletion notification
-// export const ebayDeletionNotificationController = async (req, res) => {
-//   try {
-//     console.log(
-//       "eBay deletion notification:",
-//       JSON.stringify(req.body, null, 2)
-//     );
-
-//     const result = await ebayDeletionNotificationService(req.body);
-
-//     return res.status(200).json(result);
-
-//   } catch (error) {
-//     console.error("eBay deletion notification error:", error);
-
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message || "Failed to process deletion notification",
-//     });
-//   }
-// };
-
 export const ebayDeletionNotificationController = async (req, res) => {
     try {
-        console.log("eBay deletion notification received");
-
-        const result = await ebayDeletionNotificationService(
-            req.body
+        const responseCode = await EventNotificationSDK.process(
+            req.body,
+            req.headers["x-ebay-signature"],
+            ebayNotificationConfig,
+            environment
         );
 
-        // eBay requires a successful HTTP response
-        return res.status(200).json(result);
+        if (responseCode === 204) {
+            await ebayDeletionNotificationService(req.body);
+            return res.status(204).send();
+        }
+
+        if (responseCode === 412) {
+            console.error("eBay signature mismatch", {
+                payload: req.body,
+                signature: req.headers["x-ebay-signature"],
+            });
+            return res.status(412).send();
+        }
+
+        return res.status(500).send();
 
     } catch (error) {
         console.error(

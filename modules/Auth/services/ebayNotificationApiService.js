@@ -6,7 +6,7 @@ import EbayNotificationConfig from '../model/ebayNotificationConfigModel.js';
  * Get the eBay API base URL based on environment
  */
 const getEbayApiBaseUrl = () => {
-  return process.env.EBAY_API_BASE_URL || 'https://api.sandbox.ebay.com';
+  return process.env.EBAY_API_BASE_URL || 'https://api.ebay.com';
 };
 
 /**

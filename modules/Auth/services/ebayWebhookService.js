@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import Notification from '../model/notificationModel.js';
 import Product from '../../Product/model/modal.js';
 import { getValidAccessToken } from './ebayTokenService.js';
@@ -7,6 +6,8 @@ import { updateInventoryFromOrder } from '../../Product/Service/inventoryService
 import { emitProductSold } from '../../../socket/index.js';
 import logger from '../../../utils/logger.js';
 import User from '../model/model.js';
+import EventNotificationSDK from 'event-notification-nodejs-sdk';
+import { ebayNotificationConfig } from '../../../config/ebayNotificationConfig.js';
 
 // ==========================================
 // GET - eBay Challenge Verification
@@ -63,40 +64,10 @@ export const ebayDeletionChallengeService = async (
     challengeCode
 ) => {
     try {
-        // eBay Marketplace Account Deletion
-        // verification token
-        const verificationToken =
-            process.env.EBAY_VERIFICATION_TOKEN;
-
-        // Exact endpoint URL registered with eBay
-        const endpoint =
-            process.env.EBAY_NOTIFICATION_ENDPOINT_URL;
-
-        if (!verificationToken) {
-            throw new Error(
-                "EBAY_DELETION_VERIFICATION_TOKEN is not configured"
-            );
-        }
-
-        if (!endpoint) {
-            throw new Error(
-                "EBAY_DELETION_ENDPOINT is not configured"
-            );
-        }
-
-        // eBay requires a sha256 hash of challengeCode + verificationToken + endpoint.
-        const hash = crypto.createHash("sha256");
-
-        hash.update(challengeCode);
-        hash.update(verificationToken);
-        hash.update(endpoint);
-
-        const challengeResponse =
-            hash.digest("hex");
-
-        console.log(
-            "eBay challenge response generated successfully"
-        );
+    const challengeResponse = EventNotificationSDK.validateEndpoint(
+      challengeCode,
+      ebayNotificationConfig
+    );
 
         return {
             challengeResponse,
@@ -111,7 +82,6 @@ export const ebayDeletionChallengeService = async (
         throw error;
     }
 };
-
 
 // ==========================================
 // POST - eBay Account Deletion Notification

@@ -36,7 +36,6 @@ AuthRouter.get(
 // eBay sends deletion notification
 AuthRouter.post(
   "/ebay/account-deletion",
-  verifyEbaySignature,
   ebayDeletionNotificationController
 );
 

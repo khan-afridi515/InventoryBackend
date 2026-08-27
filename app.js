@@ -9,7 +9,8 @@ import cors from 'cors';
 const allowedOrigins = (process.env.CORS_ORIGINS || [
     'http://localhost:5173',
     'https://inventory-frontend-nine-iota.vercel.app',
-    'https://inventory-frontend-3h9g.vercel.app'
+    'https://inventory-frontend-3h9g.vercel.app',
+    'https://inventory-frontend-tujw.vercel.app'
 ].join(','))
     .split(',')
     .map((origin) => origin.trim())

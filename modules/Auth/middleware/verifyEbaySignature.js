@@ -1,24 +1,31 @@
-import { jwtVerify } from 'jose';
-import { fetchEbayPublicKey } from '../../../utils/ebayKeyCache.js';
+import EventNotificationSDK from 'event-notification-nodejs-sdk';
+import { ebayNotificationConfig, environment } from '../../../config/ebayNotificationConfig.js';
 
-// Step 1A: Verify the incoming webhook signature before processing any notification
 const verifyEbaySignature = async (req, res, next) => {
   try {
-    const signature = req.headers['x-ebay-signature'];
-    const keyId = req.headers['x-ebay-signature-key-id'];
+    const responseCode = await EventNotificationSDK.process(
+      req.body,
+      req.headers['x-ebay-signature'],
+      ebayNotificationConfig,
+      environment
+    );
 
-    if (!signature || !keyId) {
-      return res.status(403).json({ success: false, status: 403, message: 'Missing eBay signature headers' });
+    if (responseCode === 204) {
+      return next();
     }
 
-    const publicKey = await fetchEbayPublicKey(keyId);
-    const payload = JSON.stringify(req.body || {});
+    if (responseCode === 412) {
+      console.error('eBay signature mismatch', {
+        payload: req.body,
+        signature: req.headers['x-ebay-signature'],
+      });
+      return res.status(412).send();
+    }
 
-    await jwtVerify(payload, publicKey);
-
-    next();
+    return res.status(500).send();
   } catch (error) {
-    return res.status(403).json({ success: false, status: 403, message: error.message || 'Signature verification failed' });
+    console.error('eBay signature verification error:', error);
+    return res.status(500).send();
   }
 };
 

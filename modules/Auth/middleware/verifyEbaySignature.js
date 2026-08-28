@@ -4,7 +4,8 @@ const verifyEbaySignature = async (req, res, next) => {
   try {
     const isValid = await verifyEbaySignaturePayload(
       req.body,
-      req.headers['x-ebay-signature']
+      req.headers['x-ebay-signature'],
+      req.rawBody
     );
 
     if (isValid) {

@@ -21,7 +21,11 @@ const corsOptions = {
     credentials: true,
 };
 
-app.use(express.json());
+app.use(express.json({
+    verify: (req, res, buffer) => {
+        req.rawBody = Buffer.from(buffer);
+    },
+}));
 
 
 app.use(cors(corsOptions));

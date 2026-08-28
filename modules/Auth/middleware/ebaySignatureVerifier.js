@@ -52,7 +52,7 @@ const getPublicKey = async (keyId, config) => {
   return publicKey;
 };
 
-const verifyEbaySignaturePayload = async (payload, signatureHeader) => {
+const verifyEbaySignaturePayload = async (payload, signatureHeader, rawBody) => {
   if (!signatureHeader) {
     throw new Error('Missing X-EBAY-SIGNATURE header');
   }
@@ -65,7 +65,7 @@ const verifyEbaySignaturePayload = async (payload, signatureHeader) => {
 
   return crypto.verify(
     'sha256',
-    Buffer.from(JSON.stringify(payload)),
+    rawBody || Buffer.from(JSON.stringify(payload)),
     publicKey,
     Buffer.from(signatureData.signature, 'base64')
   );

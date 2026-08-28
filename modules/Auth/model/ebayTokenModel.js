@@ -5,6 +5,8 @@ const ebayTokenSchema = new mongoose.Schema({
   accessToken: { type: String, required: true },
   refreshToken: { type: String, required: true },
   expiresAt: { type: Date, required: true },
+  ebayUserId: { type: String, index: true, sparse: true },
+  ebayEiasToken: { type: String, index: true, sparse: true },
   tokenType: { type: String, default: 'Bearer' },
   updatedAt: { type: Date, default: Date.now },
 }, { timestamps: true });

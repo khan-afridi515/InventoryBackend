@@ -51,6 +51,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: "user"
+    },
+
+    ebayUserId: {
+        type: String,
+        sparse: true,
+        index: true
+    },
+
+    ebayEiasToken: {
+        type: String,
+        sparse: true,
+        index: true
     }
 
 }, { timestamps: true });

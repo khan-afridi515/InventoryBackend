@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildEbayChallengeResponse } from '../modules/Auth/services/ebayOrderService.js';
+import { buildEbayDeletionChallengeResponse } from '../modules/Auth/services/ebayWebhookService.js';
 import { updateInventoryFromOrder } from '../modules/Product/Service/inventoryService.js';
 
 test('buildEbayChallengeResponse returns a deterministic signed response', () => {
@@ -8,6 +9,17 @@ test('buildEbayChallengeResponse returns a deterministic signed response', () =>
 
   assert.equal(typeof response, 'string');
   assert.match(response, /^[a-f0-9]{64}$/i);
+});
+
+test('buildEbayDeletionChallengeResponse hashes all eBay challenge fields in order', () => {
+  assert.equal(
+    buildEbayDeletionChallengeResponse(
+      'challenge-123',
+      'verify-token',
+      'https://example.com/api/v1/ebay/account-deletion'
+    ),
+    '6d124a80ae4c3916f9dfcdf4a0edaa97a27e3e1ef7930cf785e25110ae6404bf'
+  );
 });
 
 test('updateInventoryFromOrder decreases stock for each ordered line item', async () => {

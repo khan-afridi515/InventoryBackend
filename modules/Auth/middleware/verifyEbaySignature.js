@@ -1,31 +1,30 @@
-import EventNotificationSDK from 'event-notification-nodejs-sdk';
-import { ebayNotificationConfig, environment } from '../../../config/ebayNotificationConfig.js';
+import { verifyEbaySignaturePayload } from './ebaySignatureVerifier.js';
 
 const verifyEbaySignature = async (req, res, next) => {
   try {
-    const responseCode = await EventNotificationSDK.process(
+    const isValid = await verifyEbaySignaturePayload(
       req.body,
-      req.headers['x-ebay-signature'],
-      ebayNotificationConfig,
-      environment
+      req.headers['x-ebay-signature']
     );
 
-    if (responseCode === 204) {
+    if (isValid) {
       return next();
     }
 
-    if (responseCode === 412) {
-      console.error('eBay signature mismatch', {
-        payload: req.body,
-        signature: req.headers['x-ebay-signature'],
-      });
-      return res.status(412).send();
-    }
-
-    return res.status(500).send();
+    console.error('eBay signature mismatch', {
+      topic: req.body?.metadata?.topic,
+      keyId: (() => {
+        try {
+          return JSON.parse(Buffer.from(req.headers['x-ebay-signature'], 'base64').toString('utf8')).kid;
+        } catch {
+          return undefined;
+        }
+      })(),
+    });
+    return res.status(412).send();
   } catch (error) {
     console.error('eBay signature verification error:', error);
-    return res.status(500).send();
+    return res.status(412).send();
   }
 };
 

@@ -6,287 +6,79 @@ import { updateInventoryFromOrder } from '../../Product/Service/inventoryService
 import { emitProductSold } from '../../../socket/index.js';
 import logger from '../../../utils/logger.js';
 import User from '../model/model.js';
-import EventNotificationSDK from 'event-notification-nodejs-sdk';
+import EbayToken from '../model/ebayTokenModel.js';
+import crypto from 'node:crypto';
 import { ebayNotificationConfig } from '../../../config/ebayNotificationConfig.js';
 
-// ==========================================
-// GET - eBay Challenge Verification
-// ==========================================
+const buildEbayDeletionChallengeResponse = (challengeCode, verificationToken, endpoint) => {
+  if (!challengeCode || !verificationToken || !endpoint) {
+    throw new Error('challengeCode, verification token, and endpoint are required');
+  }
 
-// export const ebayDeletionChallengeService = async (challengeCode) => {
-//   try {
-//     const verificationToken =
-//       process.env.EBAY_VERIFICATION_TOKEN;
-
-//     const endpoint =
-//       process.env.EBAY_NOTIFICATION_ENDPOINT_URL;
-
-//     if (!verificationToken) {
-//       throw new Error(
-//         "EBAY_VERIFICATION_TOKEN is not configured"
-//       );
-//     }
-
-//     if (!endpoint) {
-//       throw new Error(
-//         "EBAY_DELETION_ENDPOINT is not configured"
-//       );
-//     }
-
-//     // eBay requires:
-//     // SHA256(challenge_code + verification_token + endpoint)
-
-//     const challengeResponse = crypto
-//       .createHash("sha256")
-//       .update(
-//         challengeCode +
-//         verificationToken +
-//         endpoint
-//       )
-//       .digest("hex");
-
-//     return {
-//       challengeResponse,
-//     };
-
-//   } catch (error) {
-//     console.error(
-//       "ebayDeletionChallengeService:",
-//       error
-//     );
-
-//     throw error;
-//   }
-// };
-
+  return crypto
+    .createHash('sha256')
+    .update(`${challengeCode}${verificationToken}${endpoint}`)
+    .digest('hex');
+};
 
 export const ebayDeletionChallengeService = async (
     challengeCode
 ) => {
-    try {
-    const challengeResponse = EventNotificationSDK.validateEndpoint(
+  const verificationToken = ebayNotificationConfig.verificationToken;
+  const endpoint = ebayNotificationConfig.endpoint;
+
+  return {
+    challengeResponse: buildEbayDeletionChallengeResponse(
       challengeCode,
-      ebayNotificationConfig
-    );
-
-        return {
-            challengeResponse,
-        };
-
-    } catch (error) {
-        console.error(
-            "ebayDeletionChallengeService:",
-            error
-        );
-
-        throw error;
-    }
+      verificationToken,
+      endpoint
+    ),
+  };
 };
-
-// ==========================================
-// POST - eBay Account Deletion Notification
-// ==========================================
-
-// export const ebayDeletionNotificationService = async (
-//   notification
-// ) => {
-//   try {
-//     console.log(
-//       "Processing eBay deletion notification..."
-//     );
-
-//     const data =
-//       notification?.notification?.data;
-
-//     if (!data) {
-//       throw new Error(
-//         "Invalid eBay deletion notification payload"
-//       );
-//     }
-
-//     const {
-//       username,
-//       userId,
-//       eiasToken,
-//     } = data;
-
-//     console.log("eBay deletion data:", {
-//       username,
-//       userId,
-//       eiasToken,
-//     });
-
-//     if (!userId && !eiasToken) {
-//       throw new Error(
-//         "eBay user identifier not found"
-//       );
-//     }
-
-//     /*
-//       IMPORTANT:
-
-//       Find your application user using the eBay
-//       userId/eiasToken and remove the eBay-related
-//       data from your database.
-
-//       Example:
-
-//       const user = await User.findOne({
-//         ebayUserId: userId
-//       });
-
-//       if (user) {
-//         user.ebayAccessToken = null;
-//         user.ebayRefreshToken = null;
-//         user.ebayUserId = null;
-
-//         await user.save();
-//       }
-//     */
-
-//     console.log(
-//       "eBay account deletion processed for:",
-//       userId || eiasToken
-//     );
-
-//     return {
-//       success: true,
-//       message:
-//         "eBay account deletion notification received",
-//     };
-
-//   } catch (error) {
-//     console.error(
-//       "ebayDeletionNotificationService:",
-//       error
-//     );
-
-//     throw error;
-//   }
-// };
-
-
 
 export const ebayDeletionNotificationService = async (
     notification
 ) => {
-    try {
-        console.log(
-            "Processing eBay deletion notification...", notification
-        );
+  const data = notification?.notification?.data;
+  const { userId, eiasToken } = data || {};
 
-        // -----------------------------------------
-        // 1. Validate notification payload
-        // -----------------------------------------
-
-        const data =
-            notification?.notification?.data;
-
-        if (!data) {
-            throw new Error(
-                "Invalid eBay deletion notification payload"
-            );
-        }
-
-        // -----------------------------------------
-        // 2. Extract eBay user identifiers
-        // -----------------------------------------
-
-        const {
-            username,
-            userId,
-            eiasToken,
-        } = data;
-
-        console.log(
-            "eBay deletion user information:",
-            {
-                username,
-                userId,
-                hasEiasToken: Boolean(eiasToken),
-            }
-        );
-
-        if (!userId && !eiasToken) {
-            throw new Error(
-                "eBay user identifier not found"
-            );
-        }
-
-        // -----------------------------------------
-        // 3. Find your application user
-        // -----------------------------------------
-
-        let user = null;
-
-        if (userId) {
-            user = await User.findOne({
-                ebayUserId: userId,
-            });
-        }
-
-        // Optional fallback if your database stores
-        // eiasToken instead of ebayUserId
-        if (!user && eiasToken) {
-            user = await User.findOne({
-                ebayEiasToken: eiasToken,
-            });
-        }
-
-        // -----------------------------------------
-        // 4. Handle user not found
-        // -----------------------------------------
-
-        if (!user) {
-            console.log(
-                "No application user found for eBay deletion notification"
-            );
-
-            // Still acknowledge the notification.
-            // eBay has successfully delivered it.
-            return {
-                success: true,
-                message:
-                    "eBay deletion notification received; user not found",
-            };
-        }
-
-        // -----------------------------------------
-        // 5. Remove eBay-related information
-        // -----------------------------------------
-
-        user.ebayUserId = null;
-        user.ebayAccessToken = null;
-        user.ebayRefreshToken = null;
-
-        // Only use this if your User model actually
-        // contains ebayEiasToken.
-        user.ebayEiasToken = null;
-
-        await user.save();
-
-        // -----------------------------------------
-        // 6. Log successful processing
-        // -----------------------------------------
-
-        console.log(
-            `eBay account data removed for application user: ${user._id}`
-        );
-
-        return {
-            success: true,
-            message:
-                "eBay account deletion notification processed successfully",
-        };
-
-    } catch (error) {
-        console.error(
-            "ebayDeletionNotificationService:",
-            error
-        );
-
-        throw error;
+  if (!data) {
+    throw new Error('Invalid eBay deletion notification payload');
+  }
+  if (!userId && !eiasToken) {
+    throw new Error('eBay user identifier not found');
     }
+
+  const identifiers = [userId, eiasToken].filter(Boolean);
+  const users = await User.find({
+    $or: [
+      ...(userId ? [{ ebayUserId: userId }] : []),
+      ...(eiasToken ? [{ ebayEiasToken: eiasToken }] : []),
+    ],
+  });
+  const userIds = users.map((user) => String(user._id));
+
+  await EbayToken.deleteMany({
+    $or: [
+      { ebayUserId: { $in: identifiers } },
+      { ebayEiasToken: { $in: identifiers } },
+      ...(userIds.length ? [{ userId: { $in: userIds } }] : []),
+    ],
+  });
+
+  if (users.length) {
+    await User.updateMany(
+      { _id: { $in: users.map((user) => user._id) } },
+      { $unset: { ebayUserId: 1, ebayEiasToken: 1 } }
+    );
+  }
+
+  return {
+    success: true,
+    message: users.length
+      ? 'eBay account deletion notification processed successfully'
+      : 'eBay deletion notification received; user not found',
+  };
 };
 
 // Step 5: Service validates the payload, prevents duplicates, and processes the order
@@ -457,4 +249,9 @@ const handleEbayChallenge = (req) => {
   };
 };
 
-export { processEbayOrderNotification, getAllNotifications, handleEbayChallenge };
+export {
+  processEbayOrderNotification,
+  getAllNotifications,
+  handleEbayChallenge,
+  buildEbayDeletionChallengeResponse,
+};

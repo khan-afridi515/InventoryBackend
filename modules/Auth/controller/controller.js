@@ -9,8 +9,6 @@ import {
   ebayDeletionChallengeService,
   ebayDeletionNotificationService,
 } from "../services/ebayWebhookService.js";
-import EventNotificationSDK from "event-notification-nodejs-sdk";
-import { ebayNotificationConfig, environment } from "../../../config/ebayNotificationConfig.js";
 
 // GET - eBay endpoint verification
 // export const ebayDeletionChallengeController = async (req, res) => {
@@ -81,27 +79,8 @@ export const ebayDeletionChallengeController = async (req, res) => {
 
 export const ebayDeletionNotificationController = async (req, res) => {
     try {
-        const responseCode = await EventNotificationSDK.process(
-            req.body,
-            req.headers["x-ebay-signature"],
-            ebayNotificationConfig,
-            environment
-        );
-
-        if (responseCode === 204) {
-            await ebayDeletionNotificationService(req.body);
-            return res.status(204).send();
-        }
-
-        if (responseCode === 412) {
-            console.error("eBay signature mismatch", {
-                payload: req.body,
-                signature: req.headers["x-ebay-signature"],
-            });
-            return res.status(412).send();
-        }
-
-        return res.status(500).send();
+        await ebayDeletionNotificationService(req.body);
+        return res.status(204).send();
 
     } catch (error) {
         console.error(
